@@ -10,7 +10,7 @@ export default function App() {
       sx={{
         maxWidth: "100vw",
         minHeight: "100vh",
-        background: "linear-gradient(45deg, #6bdcfe 30%, #5398ff 90%)",
+        background: "linear-gradient(45deg, #181c1d 30%, #1a1c1f 90%)",
         backgroundAttachment: "fixed",
         overflowX: "hidden",
       }}
