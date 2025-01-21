@@ -14,6 +14,7 @@ export type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
+/** Provider component for auth context */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [id, setId] = useLocalStorage<string | null>("id", null);
   const [name, setName] = useLocalStorage<string | null>("name", null);
@@ -22,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await axiosInstance.post("trainer", registerDTO);
       await login({
-        username: registerDTO.username,
+        email: registerDTO.email,
         password: registerDTO.password,
       });
       return true;
@@ -32,6 +33,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  /** Call API for authentication
+   * 
+   * Updates the id and name state if successful
+   */
   const login = async (loginDTO: IUserLoginDTO) => {
     try {
       const { data } = await axiosInstance.post("/trainer/login", loginDTO);
@@ -44,8 +49,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  /** Remove stored credentials on logout */
   const logout = () => {
     setId(null);
+    setName(null);
   };
 
   return (

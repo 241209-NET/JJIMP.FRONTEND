@@ -3,6 +3,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { AuthProvider } from "./util/auth/AuthContext";
 import Navbar from "./components/Navbar";
 import { Home } from "@mui/icons-material";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 export default function App() {
   return (
@@ -29,6 +31,8 @@ export default function App() {
             >
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Box>

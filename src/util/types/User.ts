@@ -1,10 +1,10 @@
 export type IUserLoginDTO = {
-  username: string;
+  email: string;
   password: string;
 };
 
 export type IUserRegisterDTO = {
   name: string;
-  username: string;
+  email: string;
   password: string;
 };
