@@ -24,7 +24,7 @@ export default function App() {
             <Box
               sx={{
                 margin: "0 auto",
-                "margin-top": "4rem",
+                mt: "4rem",
                 maxWidth: "1250px",
                 padding: "1rem",
               }}
