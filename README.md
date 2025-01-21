@@ -1,4 +1,4 @@
-# JJIMP.BACKEND
+# JJIMP.FRONTEND
 
 ## ABOUT
 Project Management Ticketing System:  
