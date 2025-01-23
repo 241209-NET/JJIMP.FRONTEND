@@ -2,9 +2,9 @@ import { Box, Stack } from "@mui/material";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { AuthProvider } from "./util/auth/AuthContext";
 import Navbar from "./components/Navbar";
-import { Home } from "@mui/icons-material";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Home from "./pages/Home";
 
 export default function App() {
   return (
