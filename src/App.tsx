@@ -5,6 +5,9 @@ import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import Project from "./pages/Project";
+import IssueBoard from "./pages/IssueBoard";
+import UserList from "./pages/UserList";
 
 export default function App() {
   return (
@@ -12,7 +15,7 @@ export default function App() {
       sx={{
         maxWidth: "100vw",
         minHeight: "100vh",
-        background: "linear-gradient(45deg, #181c1d 30%, #1a1c1f 90%)",
+        background: "inherit",
         backgroundAttachment: "fixed",
         overflowX: "hidden",
       }}
@@ -31,6 +34,9 @@ export default function App() {
             >
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/project" element={<Project />} />
+                <Route path="/project/:id" element={<IssueBoard />} />
+                <Route path="/userlist" element={<UserList />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="*" element={<Navigate to="/" />} />
