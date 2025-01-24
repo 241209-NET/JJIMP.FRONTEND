@@ -9,14 +9,6 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import TextField from '@mui/material/TextField';
 
 
@@ -47,7 +39,7 @@ export default function Project() {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{ width: 250 }} role="presentation">
       <h1><b> PROJECT FORM</b></h1>
       <Box
       component="form"
@@ -56,28 +48,13 @@ export default function Project() {
       autoComplete="off"
     >
       <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="Name"
-          defaultValue="Name"
-        />
+      <TextField id="filled-basic" label="Name" variant="filled" />
       </div>
       <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="Description"
-          defaultValue="Description"
-        />
+      <TextField id="filled-basic" label="Description" variant="filled" />
       </div>
       <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="Label"
-          defaultValue="Label"
-        />
+      <TextField id="filled-basic" label="Label" variant="filled" />
       </div>
     </Box>
     </Box>
@@ -87,7 +64,11 @@ export default function Project() {
     <><h1 style={{ position: "absolute", left: "100px" }}><b>Projects</b></h1>
      <div>
       <Button style={{ position: "absolute", right: "100px" }} variant="contained" onClick={toggleDrawer(true)}>Create Project</Button>
-      <Drawer anchor={"right"} open={open} onClose={toggleDrawer(false)}>
+      <Drawer anchor={"right"} open={open} variant="temporary"
+  onClose={(_, reason) =>
+    reason === 'backdropClick' && setOpen(false)
+  }>
+        
         {DrawerList}
       </Drawer>
     </div>
