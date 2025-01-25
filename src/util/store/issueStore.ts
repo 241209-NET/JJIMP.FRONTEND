@@ -2,8 +2,6 @@ import { create } from "zustand";
 
 type issueStoreState = {
   issues: Issue[];
-  users: User[];
-  projects: Project[];
   setIssues: (issues: Issue[]) => void;
   addIssue: (issue: Issue) => void;
   updateIssue: (id: number, updatedFields: Partial<Issue>) => void;
@@ -12,8 +10,6 @@ type issueStoreState = {
 
 export const useIssueStore = create<issueStoreState>((set) => ({
   issues: [],
-  users: [],
-  projects: [],
   setIssues: (issues) => set({ issues }),
   addIssue: (issue) => set((state) => ({ issues: [...state.issues, issue] })),
   updateIssue: (id, updatedFields) =>
