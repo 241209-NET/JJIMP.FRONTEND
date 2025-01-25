@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { IssueStatus } from "../util/mockdata/mockData";
 import { useThemeStore } from "../util/store/themeStore";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  Button,
+  Box,
+  Typography,
+} from "@mui/material";
 
 interface IssueFormProps {
   onSubmit: (issue: {
@@ -30,12 +38,6 @@ const IssueForm: React.FC<IssueFormProps> = ({
   const [assignee, setAssignee] = useState("");
   const { mode } = useThemeStore();
 
-  const bgColor =
-    mode === "light" ? "bg-white text-black" : "bg-gray-800 text-white";
-  const inputBg =
-    mode === "light" ? "bg-gray-100 text-black" : "bg-gray-700 text-white";
-  const borderColor = mode === "light" ? "border-gray-300" : "border-gray-600";
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newIssue = {
@@ -54,70 +56,66 @@ const IssueForm: React.FC<IssueFormProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className={`p-6 rounded shadow-lg w-96 ${bgColor}`}>
-        <h2 className="text-xl font-bold mb-4">Create Issue</h2>
+    <Box className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <Box
+        className={`p-6 rounded shadow-lg w-96 ${
+          mode === "light" ? "bg-white text-black" : "bg-gray-800 text-white"
+        }`}
+      >
+        <Typography variant="h6" className="mb-4">
+          Create Issue
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <div className="mb-2">
-            <label className="block font-medium">Title</label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className={`w-full p-2 border rounded ${inputBg} ${borderColor}`}
-              required
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block font-medium">Description</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className={`w-full p-2 border rounded ${inputBg} ${borderColor}`}
-              required
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block font-medium">Status</label>
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value as IssueStatus)}
-              className={`w-full p-2 border rounded ${inputBg} ${borderColor}`}
-            >
-              {Object.values(IssueStatus).map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-2">
-            <label className="block font-medium">Assignee (User ID)</label>
-            <input
-              type="number"
-              value={assignee}
-              onChange={(e) => setAssignee(e.target.value)}
-              className={`w-full p-2 border rounded ${inputBg} ${borderColor}`}
-            />
-          </div>
-          <div className="flex justify-end gap-2 mt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="bg-gray-500 text-white p-2 rounded"
-            >
+          <TextField
+            fullWidth
+            label="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            margin="normal"
+            required
+          />
+          <TextField
+            fullWidth
+            label="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            margin="normal"
+            multiline
+            rows={3}
+            required
+          />
+          <Select
+            fullWidth
+            value={status}
+            onChange={(e) => setStatus(e.target.value as IssueStatus)}
+            displayEmpty
+            margin="dense"
+          >
+            {Object.values(IssueStatus).map((status) => (
+              <MenuItem key={status} value={status}>
+                {status}
+              </MenuItem>
+            ))}
+          </Select>
+          <TextField
+            fullWidth
+            label="Assignee (User ID)"
+            type="number"
+            value={assignee}
+            onChange={(e) => setAssignee(e.target.value)}
+            margin="normal"
+          />
+          <Box className="flex justify-end gap-2 mt-4">
+            <Button variant="contained" color="secondary" onClick={onClose}>
               Cancel
-            </button>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white p-2 rounded"
-            >
+            </Button>
+            <Button variant="contained" color="primary" type="submit">
               Create
-            </button>
-          </div>
+            </Button>
+          </Box>
         </form>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
