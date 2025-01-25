@@ -18,10 +18,10 @@ interface Project {
   updated_at?: string | Date;
 }
 enum IssueStatus {
-  Inactive = "inactive",
-  Active = "active",
-  Review = "review",
-  Complete = "complete",
+  Inactive = "Inactive",
+  Active = "Active",
+  Review = "Review",
+  Complete = "Complete",
 }
 interface Issue {
   id: number;
