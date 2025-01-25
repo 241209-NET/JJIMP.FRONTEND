@@ -10,10 +10,13 @@ function IssueBoard() {
   const { addIssue } = useIssueStore();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
+  // this is where axios API call will happen
   const handleAddIssue = (newIssue: Issue) => {
     addIssue(newIssue);
     setIsFormOpen(false);
   };
+
+  //need to add a useEffect to call API and get issues for id on mount
 
   return (
     <div className="">
