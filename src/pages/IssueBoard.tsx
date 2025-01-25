@@ -18,7 +18,7 @@ function IssueBoard() {
   return (
     <div className="">
       <div className="flex justify-between items-center mb-4 mt-10">
-        <h1 className="text-2xl font-bold">Issue Board</h1>
+        <h1 className="text-4xl font-bold">Issue Board</h1>
         <Button
           variant="contained"
           color="primary"
