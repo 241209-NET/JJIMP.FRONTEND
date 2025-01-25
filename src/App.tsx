@@ -26,10 +26,12 @@ export default function App() {
             <Navbar />
             <Box
               sx={{
-                margin: "0 auto",
+                marginInline: "auto",
                 mt: "4rem",
-                maxWidth: "1250px",
+                width: "100% !important", // forcing width that was being override by margin
+                maxWidth: "1400px !important",
                 padding: "1rem",
+                minHeight: "calc(100vh - 4rem)",
               }}
             >
               <Routes>
