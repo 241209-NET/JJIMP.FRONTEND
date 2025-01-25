@@ -3,6 +3,7 @@ import IssueBoardComponent from "../components/IssueBoard";
 import { useIssueStore } from "../util/store/issueStore";
 import { useState } from "react";
 import IssueForm from "../components/IssueForm.tsx";
+import Button from "@mui/material/Button";
 
 function IssueBoard() {
   const { id } = useParams();
@@ -16,13 +17,23 @@ function IssueBoard() {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-bold mb-4 mt-10">Issue Board {id}</h1>
-      <button
-        onClick={() => setIsFormOpen(true)}
-        className="bg-blue-500 text-white p-2 rounded mb-4 hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
-      >
-        + Add Issue
-      </button>
+      <div className="flex justify-between items-center mb-4 mt-10">
+        <h1 className="text-2xl font-bold">Issue Board {id}</h1>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          sx={{
+            minWidth: "auto",
+            padding: "6px 12px",
+            fontSize: "0.875rem",
+            height: "fit-content",
+          }}
+          onClick={() => setIsFormOpen(true)}
+        >
+          + Add Issue
+        </Button>
+      </div>
       {isFormOpen && (
         <IssueForm
           onSubmit={handleAddIssue}
