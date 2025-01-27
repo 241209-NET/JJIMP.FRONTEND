@@ -126,7 +126,7 @@ export default function Navbar() {
             }}
             onClick={navigateToHome}
           >
-            JJIMP Ticketing
+            JJIMP
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>

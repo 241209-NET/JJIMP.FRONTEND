@@ -56,8 +56,6 @@ const CommentList: React.FC<CommentListProps> = ({ issueId }) => {
         className="mt-6 max-h-130 overflow-y-auto border p-2 rounded"
         sx={{
           "&::-webkit-scrollbar": { display: "none" },
-          "-ms-overflow-style": "none", // Hides scrollbar for Edge
-          "scrollbar-width": "none", // Hides scrollbar for Firefox
         }}
       >
         <Typography variant="h6" sx={{ mb: 2 }}>
