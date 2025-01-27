@@ -1,5 +1,5 @@
 import { useIssueStore } from "../util/store/issueStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Drawer, Box, Typography, TextField, Button } from "@mui/material";
 import CommentList from "./CommentList";
 
@@ -13,6 +13,21 @@ const IssueDrawer: React.FC<IssueDrawerProps> = ({ issueId, onClose }) => {
   const issue = issues.find((issue) => issue.id === issueId);
   const [description, setDescription] = useState(issue?.description || "");
   const [updating, setUpdating] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  // need this useeffect for smooth drawer opening
+  useEffect(() => {
+    if (issueId) {
+      setOpenDrawer(true);
+    }
+  }, [issueId]);
+
+  const handleClose = () => {
+    setOpenDrawer(false);
+    setTimeout(() => {
+      onClose(); // Reset issueId after animation completes
+    }, 300); // Adjust timing to match MUI's transition duration (default is 300ms)
+  };
 
   if (!issue) return null;
 
@@ -23,8 +38,8 @@ const IssueDrawer: React.FC<IssueDrawerProps> = ({ issueId, onClose }) => {
   };
 
   return (
-    <Drawer anchor="right" open={Boolean(issueId)} onClose={onClose}>
-      <Box className="w-96 p-4 flex-col space-y-2">
+    <Drawer anchor="right" open={openDrawer} onClose={handleClose}>
+      <Box sx={{ width: 350, p: 2, display: "flex", flexDirection: "column" }}>
         <Typography variant="h5" className="mb-2">
           {issue.title}
         </Typography>
