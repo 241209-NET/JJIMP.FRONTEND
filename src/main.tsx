@@ -6,6 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { useThemeStore } from "./util/store/themeStore.ts"; // Zustand store for theme management
 import { deepmerge } from "@mui/utils"; // Helps merge themes
 import "./Index.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 export default function RootComponent() {
   const { mode } = useThemeStore(); // Get theme mode from Zustand
