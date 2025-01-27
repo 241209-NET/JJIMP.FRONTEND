@@ -35,8 +35,9 @@ interface Issue {
   created_by: number;
   created_at?: string | Date;
   updated_at?: string | Date;
+  commentObjs?: IssueComment[];
 }
-interface Comment {
+interface IssueComment {
   id: number;
   content: string;
   issue_id: number;
