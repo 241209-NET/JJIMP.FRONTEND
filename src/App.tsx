@@ -5,9 +5,10 @@ import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
-import Project from "./pages/Project";
+// import Project from "./pages/Project";
 import IssueBoard from "./pages/IssueBoard";
 import UserList from "./pages/UserList";
+import Project2 from "./pages/Project2";
 
 export default function App() {
   return (
@@ -36,7 +37,7 @@ export default function App() {
             >
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/project" element={<Project />} />
+                <Route path="/project" element={<Project2 />} />
                 <Route path="/project/:id" element={<IssueBoard />} />
                 <Route path="/userlist" element={<UserList />} />
                 <Route path="/login" element={<Login />} />

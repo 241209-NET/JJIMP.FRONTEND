@@ -27,8 +27,10 @@ const IssueForm: React.FC<IssueFormProps> = ({
   const [assignee, setAssignee] = useState("");
   const { mode } = useThemeStore();
 
+  //Post here for new issue
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // 1. Prepare paylod
     const newIssue = {
       id: Date.now(),
       title,
@@ -41,6 +43,9 @@ const IssueForm: React.FC<IssueFormProps> = ({
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
+    //2. POST to axios
+
+    //3. Save to React state
     onSubmit(newIssue);
   };
 
