@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, {useState} from 'react';
+//import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,6 +11,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+
 
 
 
@@ -28,6 +30,24 @@ const rows = [
 ];
 
 export default function Project() {
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    label: '',
+  });
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault(); // Prevents the default form submission behaviour
+    // Process and send formData to the server or perform other actions
+    console.log('Form data submitted:', formData);
+    toggleDrawer(false);
+  };
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -35,23 +55,44 @@ export default function Project() {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation">
+    <Box sx={{ width: 350 }} role="presentation" alignItems="center" justifyContent="center" display="flex">
+      <Box sx={{ width: 250 }} role="presentation" alignItems="center">
       <h1><b> PROJECT FORM</b></h1>
-      <Box
-      component="form"
-      sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
-      <TextField id="filled-basic" label="Name" variant="filled" />
-      </div>
-      <div>
-      <TextField id="filled-basic" label="Description" variant="filled" />
-      </div>
-      <div>
-      <TextField id="filled-basic" label="Label" variant="filled" />
-      </div>
+      <form onSubmit={handleSubmit}>
+      <TextField
+        label="Name"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        required
+      />
+      <TextField
+        label="Description"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        name="description"
+        value={formData.description}
+        onChange={handleChange}
+        required
+      />
+      <TextField
+        label="Label"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        name="label"
+        value={formData.label}
+        onChange={handleChange}
+        required
+      />
+      <Button type="submit" variant="contained" color="primary">
+      Submit
+      </Button>
+    </form>
     </Box>
     </Box>
   );
