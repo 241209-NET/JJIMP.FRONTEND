@@ -56,6 +56,7 @@ export default function ProjectTable() {
     // handle fetching data here on mount
   }, []);
 
+  //these are the menu open and close functions
   const handleOpenMenu = (
     event: React.MouseEvent<HTMLButtonElement>,
     projectId: number
