@@ -26,6 +26,7 @@ import {
 import { alpha } from "@mui/material/styles";
 import { useProjectStore } from "../util/store/projectStore";
 import { useUserStore } from "../util/store/userStore";
+import { useNavigate } from "react-router";
 
 const headCells = [
   { id: "name", label: "Project", numeric: false },
@@ -43,6 +44,7 @@ export default function ProjectTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -175,7 +177,15 @@ export default function ProjectTable() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((project) => (
                   <TableRow key={project.id} hover>
-                    <TableCell>{project.name}</TableCell>
+                    <TableCell
+                      sx={{
+                        cursor: "pointer",
+                        "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.04)" },
+                      }}
+                      onClick={() => navigate(`/project/${project.id}`)}
+                    >
+                      {project.name}
+                    </TableCell>
                     <TableCell>{project.description}</TableCell>
                     <TableCell>{project.project_manager}</TableCell>
                     <TableCell>{project.user_id.join(", ")}</TableCell>
