@@ -9,8 +9,14 @@ import Home from "./pages/Home";
 import IssueBoard from "./pages/IssueBoard";
 import UserList from "./pages/UserList";
 import Project2 from "./pages/Project2";
+import { useEffect } from "react";
 
 export default function App() {
+  useEffect(() => {
+    //fetch users,projects,issues
+    //store in zustand
+  }, []);
+
   return (
     <Box
       sx={{

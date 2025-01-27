@@ -3,8 +3,16 @@ import { useIssueStore } from "../util/store/issueStore";
 import IssueColumn from "./IssueColumn.tsx";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 
-const IssueBoard: React.FC = () => {
+interface IssueBoardProps {
+  projectId: number;
+}
+
+const IssueBoard: React.FC<IssueBoardProps> = ({ projectId }) => {
   const { issues, updateIssue } = useIssueStore();
+
+  const filteredIssues = issues.filter(
+    (issue) => issue.project_id === projectId
+  );
 
   //PUT request goes here for status
   const handleDragEnd = (result: DropResult) => {
@@ -22,7 +30,7 @@ const IssueBoard: React.FC = () => {
           <IssueColumn
             key={status}
             status={status}
-            issues={issues.filter((issue) => issue.status === status)}
+            issues={filteredIssues.filter((issue) => issue.status === status)}
           />
         ))}
       </div>

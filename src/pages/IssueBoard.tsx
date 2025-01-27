@@ -44,7 +44,7 @@ function IssueBoard() {
           projectId={Number(id)}
         />
       )}
-      <IssueBoardComponent />
+      <IssueBoardComponent projectId={Number(id)} />
     </div>
   );
 }
