@@ -11,18 +11,7 @@ import {
 } from "@mui/material";
 
 interface IssueFormProps {
-  onSubmit: (issue: {
-    id: number;
-    title: string;
-    description: string;
-    status: IssueStatus;
-    assignee: number[];
-    project_id: number;
-    comments: any[];
-    created_by: number;
-    created_at: string;
-    updated_at: string;
-  }) => void;
+  onSubmit: (issue: Issue) => void;
   onClose: () => void;
   projectId: number;
 }
