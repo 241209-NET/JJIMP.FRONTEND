@@ -10,7 +10,7 @@ function IssueBoard() {
   const { addIssue } = useIssueStore();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
-  // this is where axios API call will happen
+  // this is where axios API call will happen, POST request for new issue
   const handleAddIssue = (newIssue: Issue) => {
     addIssue(newIssue);
     setIsFormOpen(false);

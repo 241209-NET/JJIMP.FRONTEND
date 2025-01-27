@@ -6,6 +6,7 @@ import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 const IssueBoard: React.FC = () => {
   const { issues, updateIssue } = useIssueStore();
 
+  //PUT request goes here for status
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     const { draggableId, destination } = result;

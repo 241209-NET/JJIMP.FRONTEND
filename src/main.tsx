@@ -18,7 +18,7 @@ export default function RootComponent() {
         main: "#ede7f6", // Soft lavender
       },
       secondary: {
-        main: "#dcd6f7", // Softer accents
+        main: "#b1a1f7", // Softer accents
       },
       background: {
         default: "#f5f3fc",

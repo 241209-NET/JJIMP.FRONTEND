@@ -14,10 +14,11 @@ const CommentList: React.FC<CommentListProps> = ({ issueId }) => {
 
   if (!issue) return null;
 
+  //Posting comment logic goes here
   const handleAddComment = () => {
     if (!commentText.trim()) return;
     const newComment: IssueComment = {
-      id: 1,
+      id: Date.now(),
       content: commentText,
       issue_id: issueId,
       posted_by: 1, // Placeholder until authentication is added
@@ -33,7 +34,7 @@ const CommentList: React.FC<CommentListProps> = ({ issueId }) => {
   };
 
   return (
-    <Box className="mt-4">
+    <Box className="">
       <TextField
         fullWidth
         label="Add a comment"
@@ -41,13 +42,25 @@ const CommentList: React.FC<CommentListProps> = ({ issueId }) => {
         rows={2}
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
-        className="mb-2"
+        sx={{ mt: 2 }}
       />
-      <Button variant="contained" color="primary" onClick={handleAddComment}>
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{ mt: 2 }}
+        onClick={handleAddComment}
+      >
         Post Comment
       </Button>
-      <Box className="mt-4">
-        <Typography variant="h6" className="mb-2">
+      <Box
+        className="mt-6 max-h-130 overflow-y-auto border p-2 rounded"
+        sx={{
+          "&::-webkit-scrollbar": { display: "none" },
+          "-ms-overflow-style": "none", // Hides scrollbar for Edge
+          "scrollbar-width": "none", // Hides scrollbar for Firefox
+        }}
+      >
+        <Typography variant="h6" sx={{ mb: 2 }}>
           All Comments
         </Typography>
         {issue.commentObjs &&

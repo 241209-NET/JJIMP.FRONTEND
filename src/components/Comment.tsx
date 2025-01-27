@@ -11,9 +11,17 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 
   if (!issue) return null;
 
+  //Delete comment logic goes here
   const handleDeleteComment = () => {
-    const updatedComments = issue.comments.filter((c) => c !== comment.id);
-    updateIssue(issue.id, { comments: updatedComments });
+    if (!issue.commentObjs) return;
+
+    const updatedCommentObjs = issue.commentObjs.filter(
+      (c) => c.id !== comment.id
+    );
+
+    updateIssue(issue.id, {
+      commentObjs: [...updatedCommentObjs],
+    });
   };
 
   return (
