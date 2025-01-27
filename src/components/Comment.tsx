@@ -15,10 +15,13 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   const handleDeleteComment = () => {
     if (!issue.commentObjs) return;
 
+    //1. payload
     const updatedCommentObjs = issue.commentObjs.filter(
       (c) => c.id !== comment.id
     );
+    //2. Axios call
 
+    //3. Update state
     updateIssue(issue.id, {
       commentObjs: [...updatedCommentObjs],
     });
