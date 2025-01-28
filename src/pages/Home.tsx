@@ -15,6 +15,7 @@ import {
   Comment,
   RocketLaunch,
   Login,
+  AppRegistration,
 } from "@mui/icons-material";
 
 export default function Home() {
@@ -33,6 +34,10 @@ export default function Home() {
 
   const handleSignUp = () => {
     navigate("/register");
+  };
+
+  const handleLogIn = () => {
+    navigate("/login");
   };
 
   const features = [
@@ -96,6 +101,16 @@ export default function Home() {
               color="inherit"
               size="large"
               startIcon={<Login />}
+              onClick={handleLogIn}
+              sx={{ px: 4, py: 1.5 }}
+            >
+              Log in
+            </Button>
+            <Button
+              variant="outlined"
+              color="inherit"
+              size="large"
+              startIcon={<AppRegistration />}
               onClick={handleSignUp}
               sx={{ px: 4, py: 1.5 }}
             >
