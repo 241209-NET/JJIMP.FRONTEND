@@ -8,7 +8,6 @@ import Home from "./pages/Home";
 import Project from "./pages/Project";
 import IssueBoard from "./pages/IssueBoard";
 import UserList from "./pages/UserList";
-import "./App.css";
 
 export default function App() {
   return (

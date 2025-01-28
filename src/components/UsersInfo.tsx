@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useState } from "react";
 
 function Message() {
@@ -65,24 +66,20 @@ function Message() {
   const [selectedUserUpdatedAt, setSelectedUserUpdatedAt] = useState(" ");
   return (
     <>
-      <div id="app">
-        <div className="users">
-          <div className="users__names" style={{ resize: "both" }}>
-            <span
-              className="users__names--title"
-              style={{
-                color: "black",
-                fontWeight: "bold",
-                fontSize: "15px",
-                fontFamily: "verdana",
-                textAlign: "center",
-              }}
+      <div>
+        <div>
+          <div style={{ textAlign: "center" }}>
+            <Typography
+              variant="h3"
+              color="textSecondary"
+              component="h2"
+              gutterBottom
             >
               All Users
-            </span>
-            <div className="Users_List">
+            </Typography>
+            <div style={{ textAlign: "center" }}>
               {Users.length === 0 && <p>No Users Found!</p>}
-              <ul className="list-group">
+              <ul>
                 {Users.map((user) => (
                   <li
                     className={
@@ -106,18 +103,15 @@ function Message() {
               </ul>
             </div>
           </div>
-          <div className="users__single" style={{ resize: "both" }}>
-            <div
-              className="users__single--title"
-              style={{
-                color: "black",
-                fontWeight: "bold",
-                fontSize: "15px",
-                fontFamily: "verdana",
-              }}
+          <div style={{ textAlign: "center" }}>
+            <Typography
+              variant="h3"
+              color="textSecondary"
+              component="h2"
+              gutterBottom
             >
-              User's Information
-            </div>
+              User's Profile
+            </Typography>
             <div>
               <div>
                 <img
@@ -140,11 +134,47 @@ function Message() {
                   }}
                 />
               </div>
-              <div>Name: {selectedUserName}</div>
-              <div>Email: {selectedUserEmail}</div>
-              <div>Last Activity Date: {selectedUserLastActivity}</div>
-              <div>Created Date: {selectedUserCreatedAt}</div>
-              <div>Updated Date: {selectedUserUpdatedAt}</div>
+
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                component="h2"
+                gutterBottom
+              >
+                Name: {selectedUserName}
+              </Typography>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                component="h2"
+                gutterBottom
+              >
+                Email: {selectedUserEmail}
+              </Typography>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                component="h2"
+                gutterBottom
+              >
+                Last Activity Date: {selectedUserLastActivity}
+              </Typography>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                component="h2"
+                gutterBottom
+              >
+                Created Date: {selectedUserCreatedAt}
+              </Typography>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                component="h2"
+                gutterBottom
+              >
+                Updated Date: {selectedUserUpdatedAt}
+              </Typography>
             </div>
           </div>
         </div>

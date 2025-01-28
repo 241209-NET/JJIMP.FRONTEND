@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useState } from "react";
 
 function UsersComments() {
@@ -53,9 +54,23 @@ function UsersComments() {
                 setMyIndex(comment.id);
               }}
             >
-              <div className="text_descriptions">Id:</div>
+              <Typography
+                variant="h5"
+                color="textSecondary"
+                component="h2"
+                gutterBottom
+              >
+                Id:
+              </Typography>
               {comment.id}
-              <div className="text_descriptions">Description:</div>
+              <Typography
+                variant="h5"
+                color="textSecondary"
+                component="h2"
+                gutterBottom
+              >
+                Description:
+              </Typography>
               {comment.content}
             </li>
           ))}
