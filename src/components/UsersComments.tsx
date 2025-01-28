@@ -1,82 +1,68 @@
-import { Typography } from "@mui/material";
 import { useState } from "react";
+import {
+  Typography,
+  Paper,
+  List,
+  ListItemButton,
+  Divider,
+  Box,
+} from "@mui/material";
 
 function UsersComments() {
-  const [myIndex, setMyIndex] = useState(-1);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  let CommentsWorker = [];
-
-  let Comments = [
-    {
-      id: 1,
-      content: "This comment should not be listed",
-    },
-    {
-      id: 2,
-      content: "This is my 2nd recent comment",
-    },
-    {
-      id: 3,
-      content: "This is my 3rd recent comment",
-    },
-    {
-      id: 4,
-      content: "This is my 4th recent comment",
-    },
-    {
-      id: 5,
-      content: "This is my 5th recent comment",
-    },
-    {
-      id: 6,
-      content: "This is my most recent comment",
-    },
+  const Comments = [
+    { id: 2, content: "This is my 2nd recent comment" },
+    { id: 3, content: "This is my 3rd recent comment" },
+    { id: 4, content: "This is my 4th recent comment" },
+    { id: 5, content: "This is my 5th recent comment" },
+    { id: 6, content: "This is my most recent comment" },
   ];
 
-  for (let i = Comments.length - 5; i < Comments.length; i++) {
-    if (Comments.length > 5) {
-      CommentsWorker.push(Comments[i]);
-    }
-  }
-
   return (
-    <>
-      <div className="Users_List_Two">
-        {Comments.length === 0 && <p>No items found</p>}
-        <ul className="list-group">
-          {CommentsWorker.map((comment) => (
-            <li
-              className={
-                myIndex === comment.id ? "list-group-item active" : "list-group"
-              }
+    <Paper
+      elevation={3}
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        width: "100%",
+        minWidth: 300,
+        maxWidth: 400,
+      }}
+    >
+      {/* Title */}
+      <Typography variant="h6" fontWeight="bold" gutterBottom>
+        Recent Comments
+      </Typography>
+      <Divider sx={{ mb: 2 }} />
+
+      {Comments.length === 0 ? (
+        <Typography color="textSecondary">No Comments Found</Typography>
+      ) : (
+        <List disablePadding>
+          {Comments.map((comment) => (
+            <ListItemButton
               key={comment.id}
-              onClick={() => {
-                setMyIndex(comment.id);
+              selected={selectedIndex === comment.id}
+              onClick={() => setSelectedIndex(comment.id)}
+              sx={{
+                borderRadius: 1,
+                py: 1.5,
               }}
             >
-              <Typography
-                variant="h5"
-                color="textSecondary"
-                component="h2"
-                gutterBottom
-              >
-                Id:
-              </Typography>
-              {comment.id}
-              <Typography
-                variant="h5"
-                color="textSecondary"
-                component="h2"
-                gutterBottom
-              >
-                Description:
-              </Typography>
-              {comment.content}
-            </li>
+              <Box>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Comment ID: {comment.id}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {comment.content}
+                </Typography>
+              </Box>
+            </ListItemButton>
           ))}
-        </ul>
-      </div>
-    </>
+        </List>
+      )}
+    </Paper>
   );
 }
 

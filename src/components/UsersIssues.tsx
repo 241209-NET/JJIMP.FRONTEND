@@ -1,82 +1,68 @@
-import { Typography } from "@mui/material";
 import { useState } from "react";
+import {
+  Typography,
+  Paper,
+  List,
+  ListItemButton,
+  Divider,
+  Box,
+} from "@mui/material";
 
 function UsersIssues() {
-  let IssuesWorker = [];
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  let Issues = [
-    {
-      id: 1,
-      description: "This issue should not be listed",
-    },
-    {
-      id: 2,
-      description:
-        "This is my jjjj jjjjjjsldf jlsj flsjfs ldjf;sdfds2nd recent issue",
-    },
-    {
-      id: 3,
-      description: "This is my 3dfksdf ;lsjdfsj adf; lsdkfrd recent issue",
-    },
-    {
-      id: 4,
-      description:
-        "This is msd fsdj kf;lsjf;ls adjkf;l asdjfy 4th recent issue",
-    },
-    {
-      id: 5,
-      description: "This is my 5th recent issue",
-    },
-    {
-      id: 6,
-      description: "This is my most recent issue",
-    },
+  const Issues = [
+    { id: 2, description: "This is my 2nd recent issue" },
+    { id: 3, description: "This is my 3rd recent issue" },
+    { id: 4, description: "This is my 4th recent issue" },
+    { id: 5, description: "This is my 5th recent issue" },
+    { id: 6, description: "This is my most recent issue" },
   ];
 
-  const [myIndex, setMyIndex] = useState(-1);
-
-  for (let i = Issues.length - 5; i < Issues.length; i++) {
-    if (Issues.length > 5) {
-      IssuesWorker.push(Issues[i]);
-    }
-  }
-
   return (
-    <div className="Users_List_Two">
-      {Issues.length === 0 && <p>No items found</p>}
-      <ul className="list-group">
-        {IssuesWorker.map((issue) => (
-          <li
-            className={
-              myIndex === issue.id ? "list-group-item active" : "list-group"
-            }
-            key={issue.id}
-            onClick={() => {
-              setMyIndex(issue.id);
-            }}
-          >
-            <Typography
-              variant="h5"
-              color="textSecondary"
-              component="h2"
-              gutterBottom
+    <Paper
+      elevation={3}
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        width: "100%",
+        minWidth: 300,
+        maxWidth: 400,
+      }}
+    >
+      {/* Title */}
+      <Typography variant="h6" fontWeight="bold" gutterBottom>
+        Recent Issues
+      </Typography>
+      <Divider sx={{ mb: 2 }} />
+
+      {Issues.length === 0 ? (
+        <Typography color="textSecondary">No Issues Found</Typography>
+      ) : (
+        <List disablePadding>
+          {Issues.map((issue) => (
+            <ListItemButton
+              key={issue.id}
+              selected={selectedIndex === issue.id}
+              onClick={() => setSelectedIndex(issue.id)}
+              sx={{
+                borderRadius: 1,
+                py: 1.5,
+              }}
             >
-              Id:
-            </Typography>
-            {issue.id}
-            <Typography
-              variant="h5"
-              color="textSecondary"
-              component="h2"
-              gutterBottom
-            >
-              Description:
-            </Typography>
-            {issue.description}
-          </li>
-        ))}
-      </ul>
-    </div>
+              <Box>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Issue ID: {issue.id}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {issue.description}
+                </Typography>
+              </Box>
+            </ListItemButton>
+          ))}
+        </List>
+      )}
+    </Paper>
   );
 }
 
