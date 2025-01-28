@@ -1,98 +1,131 @@
-import { Button, ButtonGroup, Container, Typography } from "@mui/material";
+import { useState } from "react";
+import { Button, Typography, Drawer, Box, Paper, Stack } from "@mui/material";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import CommentIcon from "@mui/icons-material/Comment";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import UsersInfo from "../components/UsersInfo";
-import Drawer from "@mui/material/Drawer";
 import UsersComments from "../components/UsersComments";
 import UsersIssues from "../components/UsersIssues";
+import UsersProjects from "../components/UsersProjects";
 
 function UserList() {
+  // Drawer states
+  const [openProjects, setOpenProjects] = useState(false);
+  const [openComments, setOpenComments] = useState(false);
+  const [openIssues, setOpenIssues] = useState(false);
+
   return (
-    <Container>
-      <Drawer
+    <Box sx={{ maxWidth: 1400, mx: "auto", py: 4 }}>
+      {/* User Info Section */}
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+        textAlign="center"
+        gutterBottom
+      >
+        User Information
+      </Typography>
+
+      <Paper
+        elevation={3}
         sx={{
-          width: 240,
-        }}
-        variant="permanent"
-        anchor="left"
-        PaperProps={{
-          sx: { width: 210, backgroundColor: "#B39DDB" },
+          p: 3,
+          my: 2,
+          borderRadius: 2,
+          bgcolor: "background.paper",
+          maxWidth: 500,
+          mx: "auto",
+          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
         }}
       >
-        <div style={{ padding: 15, margin: 15 }}>
-          <Typography
-            variant="h5"
-            color="textSecondary"
-            component="h2"
-            gutterBottom
-          >
-            Recent Comments
+        <UsersInfo />
+      </Paper>
+
+      {/* Button Group to Open Drawers */}
+      <Stack direction="row" justifyContent="center" spacing={2} sx={{ mt: 3 }}>
+        <Button
+          onClick={() => setOpenProjects(true)}
+          variant="contained"
+          color="primary"
+          startIcon={<AccountTreeIcon />}
+          sx={{
+            borderRadius: 2,
+            textTransform: "none",
+            fontWeight: 600,
+          }}
+        >
+          Projects
+        </Button>
+        <Button
+          onClick={() => setOpenComments(true)}
+          variant="contained"
+          color="secondary"
+          startIcon={<CommentIcon />}
+          sx={{
+            borderRadius: 2,
+            textTransform: "none",
+            fontWeight: 600,
+          }}
+        >
+          Comments
+        </Button>
+        <Button
+          onClick={() => setOpenIssues(true)}
+          variant="contained"
+          color="error"
+          startIcon={<BugReportIcon />}
+          sx={{
+            borderRadius: 2,
+            textTransform: "none",
+            fontWeight: 600,
+          }}
+        >
+          Issues
+        </Button>
+      </Stack>
+
+      {/* Drawer for Projects */}
+      <Drawer
+        anchor="right"
+        open={openProjects}
+        onClose={() => setOpenProjects(false)}
+      >
+        <Box sx={{ width: 350, p: 3 }}>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            Assigned Projects
+          </Typography>
+          <UsersProjects />
+        </Box>
+      </Drawer>
+
+      {/* Drawer for Comments */}
+      <Drawer
+        anchor="right"
+        open={openComments}
+        onClose={() => setOpenComments(false)}
+      >
+        <Box sx={{ width: 350, p: 3 }}>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            User's Recent Comments
           </Typography>
           <UsersComments />
-        </div>
+        </Box>
       </Drawer>
+
+      {/* Drawer for Issues */}
       <Drawer
-        sx={{
-          width: 240,
-        }}
-        variant="permanent"
         anchor="right"
-        PaperProps={{
-          sx: { width: 210, backgroundColor: "#B39DDB" },
-        }}
+        open={openIssues}
+        onClose={() => setOpenIssues(false)}
       >
-        <div style={{ padding: 15, margin: 15 }}>
-          <Typography
-            variant="h5"
-            color="textSecondary"
-            component="h2"
-            gutterBottom
-          >
+        <Box sx={{ width: 350, p: 3 }}>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
             Recent Issues
           </Typography>
           <UsersIssues />
-        </div>
+        </Box>
       </Drawer>
-      <Typography
-        variant="h3"
-        color="textSecondary"
-        component="h2"
-        gutterBottom
-      >
-        User's Information
-        <Button
-          onClick={() =>
-            console.log(
-              "you clicked me/but need to open up drawer with user info"
-            )
-          }
-          type="submit"
-          color="success"
-          variant="outlined"
-          startIcon={<ManageAccountsIcon />}
-        >
-          Details
-        </Button>
-      </Typography>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ border: "inset", color: "#B39DDB", padding: 25 }}>
-          <UsersInfo />
-        </div>
-      </div>
-
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-
-      <ButtonGroup color="success" variant="contained">
-        <Button startIcon={<AccountTreeIcon />}>Projects</Button>
-        <Button startIcon={<CommentIcon />}>Comments</Button>
-        <Button startIcon={<BugReportIcon />}>Issues</Button>
-      </ButtonGroup>
-    </Container>
+    </Box>
   );
 }
 
