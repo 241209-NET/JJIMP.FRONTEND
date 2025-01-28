@@ -1,119 +1,98 @@
+import { Button, ButtonGroup, Container, Typography } from "@mui/material";
+import BugReportIcon from "@mui/icons-material/BugReport";
+import CommentIcon from "@mui/icons-material/Comment";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import UsersInfo from "../components/UsersInfo";
-import UsersIssues from "../components/UsersIssues";
-import UsersProjects from "../components/UsersProjects";
+import Drawer from "@mui/material/Drawer";
 import UsersComments from "../components/UsersComments";
+import UsersIssues from "../components/UsersIssues";
 
 function UserList() {
   return (
-    <div>
-      <div className="jumbotron text-center"></div>
-
-      <br></br>
-      <br></br>
-      <div>
-        <div
-          style={{
-            backgroundColor: "#F0F0F0",
-            height: "500px",
-            width: " 780px",
-            textAlign: "center",
-            margin: "auto",
-          }}
-        >
-          <h3
-            style={{
-              color: "black",
-              fontWeight: "bold",
-              fontSize: "15px",
-              fontFamily: "verdana",
-              textAlign: "left",
-            }}
+    <Container>
+      <Drawer
+        sx={{
+          width: 240,
+        }}
+        variant="permanent"
+        anchor="left"
+        PaperProps={{
+          sx: { width: 210, backgroundColor: "#B39DDB" },
+        }}
+      >
+        <div style={{ padding: 15, margin: 15 }}>
+          <Typography
+            variant="h5"
+            color="textSecondary"
+            component="h2"
+            gutterBottom
           >
-            User
-          </h3>
+            Recent Comments
+          </Typography>
+          <UsersComments />
+        </div>
+      </Drawer>
+      <Drawer
+        sx={{
+          width: 240,
+        }}
+        variant="permanent"
+        anchor="right"
+        PaperProps={{
+          sx: { width: 210, backgroundColor: "#B39DDB" },
+        }}
+      >
+        <div style={{ padding: 15, margin: 15 }}>
+          <Typography
+            variant="h5"
+            color="textSecondary"
+            component="h2"
+            gutterBottom
+          >
+            Recent Issues
+          </Typography>
+          <UsersIssues />
+        </div>
+      </Drawer>
+      <Typography
+        variant="h3"
+        color="textSecondary"
+        component="h2"
+        gutterBottom
+      >
+        User's Information
+        <Button
+          onClick={() =>
+            console.log(
+              "you clicked me/but need to open up drawer with user info"
+            )
+          }
+          type="submit"
+          color="success"
+          variant="outlined"
+          startIcon={<ManageAccountsIcon />}
+        >
+          Details
+        </Button>
+      </Typography>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ border: "inset", color: "#B39DDB", padding: 25 }}>
           <UsersInfo />
         </div>
       </div>
+
       <br></br>
       <br></br>
       <br></br>
       <br></br>
 
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-4">
-            <div
-              style={{
-                backgroundColor: "#F0F0F0",
-                padding: "50px",
-                margin: "auto",
-              }}
-            >
-              <h3
-                style={{
-                  color: "black",
-                  fontWeight: "bold",
-                  fontSize: "15px",
-                  fontFamily: "verdana",
-                  textAlign: "left",
-                  borderBlockStyle: "inset",
-                }}
-              >
-                Recent Issues
-              </h3>
-              <UsersIssues />
-            </div>
-          </div>
-          <div className="col-sm-4">
-            <div
-              style={{
-                backgroundColor: "#F0F0F0",
-                padding: "50px",
-                margin: "auto",
-              }}
-            >
-              <h3
-                style={{
-                  color: "black",
-                  fontWeight: "bold",
-                  fontSize: "15px",
-                  fontFamily: "verdana",
-                  textAlign: "left",
-                  borderBlockStyle: "inset",
-                }}
-              >
-                Recent Projects
-              </h3>
-              <UsersProjects />
-            </div>
-          </div>
-          <div className="col-sm-4">
-            <div
-              style={{
-                backgroundColor: "#F0F0F0",
-                padding: "50px",
-                margin: "auto",
-              }}
-            >
-              <h3
-                style={{
-                  color: "black",
-                  fontWeight: "bold",
-                  fontSize: "15px",
-                  fontFamily: "verdana",
-                  textAlign: "left",
-                  borderBlockStyle: "inset",
-                }}
-              >
-                Recent Comments
-              </h3>
-              <UsersComments />
-            </div>
-          </div>
-        </div>
-      </div>
-      <br></br>
-    </div>
+      <ButtonGroup color="success" variant="contained">
+        <Button startIcon={<AccountTreeIcon />}>Projects</Button>
+        <Button startIcon={<CommentIcon />}>Comments</Button>
+        <Button startIcon={<BugReportIcon />}>Issues</Button>
+      </ButtonGroup>
+    </Container>
   );
 }
 

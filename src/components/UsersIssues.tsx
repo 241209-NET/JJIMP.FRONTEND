@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useState } from "react";
 
 function UsersIssues() {
@@ -10,15 +11,17 @@ function UsersIssues() {
     },
     {
       id: 2,
-      description: "This is my 2nd recent issue",
+      description:
+        "This is my jjjj jjjjjjsldf jlsj flsjfs ldjf;sdfds2nd recent issue",
     },
     {
       id: 3,
-      description: "This is my 3rd recent issue",
+      description: "This is my 3dfksdf ;lsjdfsj adf; lsdkfrd recent issue",
     },
     {
       id: 4,
-      description: "This is my 4th recent issue",
+      description:
+        "This is msd fsdj kf;lsjf;ls adjkf;l asdjfy 4th recent issue",
     },
     {
       id: 5,
@@ -52,9 +55,23 @@ function UsersIssues() {
               setMyIndex(issue.id);
             }}
           >
-            <div className="text_descriptions">Id:</div>
+            <Typography
+              variant="h5"
+              color="textSecondary"
+              component="h2"
+              gutterBottom
+            >
+              Id:
+            </Typography>
             {issue.id}
-            <div className="text_descriptions">Description:</div>
+            <Typography
+              variant="h5"
+              color="textSecondary"
+              component="h2"
+              gutterBottom
+            >
+              Description:
+            </Typography>
             {issue.description}
           </li>
         ))}

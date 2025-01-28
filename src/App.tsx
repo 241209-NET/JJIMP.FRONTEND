@@ -8,8 +8,11 @@ import Home from "./pages/Home";
 // import Project from "./pages/Project";
 import IssueBoard from "./pages/IssueBoard";
 import UserList from "./pages/UserList";
+<<<<<<< HEAD
 import Project2 from "./pages/Project2";
 import { useEffect } from "react";
+=======
+>>>>>>> 6d3bfe3 (MUI updates)
 
 export default function App() {
   useEffect(() => {
