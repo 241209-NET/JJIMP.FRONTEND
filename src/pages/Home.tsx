@@ -63,6 +63,7 @@ export default function Home() {
           textAlign: "center",
           background: `linear-gradient(45deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.dark} 100%)`,
           color: "common.white",
+          borderRadius: 1,
         }}
       >
         <Container maxWidth="md">
@@ -167,6 +168,7 @@ export default function Home() {
           py: 10,
           bgcolor: "secondary.main",
           color: "common.white",
+          borderRadius: 1,
         }}
       >
         <Container maxWidth="md" sx={{ textAlign: "center" }}>
