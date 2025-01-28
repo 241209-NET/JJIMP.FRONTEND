@@ -10,6 +10,24 @@ import IssueBoard from "./pages/IssueBoard";
 import UserList from "./pages/UserList";
 import Project2 from "./pages/Project2";
 import { useEffect } from "react";
+import { useAuth } from "./util/auth/AuthContext";
+
+//Adding route protection
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const { id } = useAuth();
+  if (!id) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
+const AuthRoute = ({ children }: { children: JSX.Element }) => {
+  const { id } = useAuth();
+  if (id) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
 
 export default function App() {
   useEffect(() => {
@@ -43,11 +61,49 @@ export default function App() {
             >
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/project" element={<Project2 />} />
-                <Route path="/project/:id" element={<IssueBoard />} />
-                <Route path="/userlist" element={<UserList />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+                <Route
+                  path="/login"
+                  element={
+                    <AuthRoute>
+                      <Login />
+                    </AuthRoute>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <AuthRoute>
+                      <Register />
+                    </AuthRoute>
+                  }
+                />
+
+                {/* Protected routes */}
+                <Route
+                  path="/project"
+                  element={
+                    <ProtectedRoute>
+                      <Project2 />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/project/:id"
+                  element={
+                    <ProtectedRoute>
+                      <IssueBoard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/userlist"
+                  element={
+                    <ProtectedRoute>
+                      <UserList />
+                    </ProtectedRoute>
+                  }
+                />
+
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Box>

@@ -27,6 +27,7 @@ import { alpha } from "@mui/material/styles";
 import { useProjectStore } from "../util/store/projectStore";
 import { useUserStore } from "../util/store/userStore";
 import { useNavigate } from "react-router";
+import { useCurrentUserStore } from "../util/store/currentUserStore";
 
 const headCells = [
   { id: "name", label: "Project", numeric: false },
@@ -45,10 +46,11 @@ export default function ProjectTable() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { currentUser } = useCurrentUserStore();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    project_manager: 1,
+    project_manager: currentUser?.id,
     user_id: [],
   });
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
@@ -108,7 +110,12 @@ export default function ProjectTable() {
       updated_at: new Date().toISOString(),
     };
     addProject(newProject);
-    setFormData({ name: "", description: "", project_manager: 1, user_id: [] });
+    setFormData({
+      name: "",
+      description: "",
+      project_manager: currentUser?.id,
+      user_id: [],
+    });
     setOpen(false);
   };
 

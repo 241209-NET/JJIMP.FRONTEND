@@ -12,7 +12,7 @@ interface Project {
   id: number;
   name: string;
   description: string;
-  project_manager: number;
+  project_manager: number | undefined;
   user_id: number[];
   created_at?: string | Date;
   updated_at?: string | Date;
