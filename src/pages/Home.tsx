@@ -7,7 +7,7 @@ export default function Home() {
 
   const handleSimulatedLogin = () => {
     setCurrentUser({
-      id: 1,
+      id: 2,
       name: "Test User",
       email: "test@example.com",
     });
