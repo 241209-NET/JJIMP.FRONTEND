@@ -50,12 +50,12 @@ export default function Home() {
     {
       icon: <Code fontSize="large" color="secondary" />,
       title: "Project Management",
-      description: "Create and organize projects with customizable workflows",
+      description: "Create and organize projects with a click of a button",
     },
     {
       icon: <Comment fontSize="large" color="success" />,
       title: "Real-time Collaboration",
-      description: "Comment, mention teammates, and track changes",
+      description: "Comment and track changes to individual tickets",
     },
   ];
 
