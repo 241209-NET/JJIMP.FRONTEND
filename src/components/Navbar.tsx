@@ -53,6 +53,7 @@ export default function Navbar() {
 
   const navigateToHome = () => navigate("/");
   const navigateToLogin = () => navigate("/login");
+  const navigateToProfile = () => navigate("/profile");
   const navigateToProject = () => {
     if (!id) return navigate("/login");
     navigate("/project");
@@ -194,6 +195,8 @@ export default function Navbar() {
                       ? logout
                       : setting === "Login"
                       ? navigateToLogin
+                      : setting === "Profile"
+                      ? navigateToProfile
                       : handleCloseUserMenu
                   }
                 >

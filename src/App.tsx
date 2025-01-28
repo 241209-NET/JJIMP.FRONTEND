@@ -11,6 +11,7 @@ import UserList from "./pages/UserList";
 import Project2 from "./pages/Project2";
 import { useEffect } from "react";
 import { useAuth } from "./util/auth/AuthContext";
+import Profile from "./pages/Profile";
 
 //Adding route protection
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -100,6 +101,14 @@ export default function App() {
                   element={
                     <ProtectedRoute>
                       <UserList />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
                     </ProtectedRoute>
                   }
                 />
