@@ -23,7 +23,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 export default function Navbar() {
   const { id, logout } = useAuth();
   const navigate = useNavigate();
-  const pages = ["Home", "Project", "Users"];
+  const pages = id ? ["Home", "Project", "Users"] : ["Home"];
   const settings = id ? ["Profile", "Logout"] : ["Login"];
   const { mode, toggleTheme } = useThemeStore();
 
@@ -52,8 +52,15 @@ export default function Navbar() {
 
   const navigateToHome = () => navigate("/");
   const navigateToLogin = () => navigate("/login");
-  const navigateToProject = () => navigate("/project");
-  const navigateToUsers = () => navigate("/userlist");
+  const navigateToProject = () => {
+    if (!id) return navigate("/login");
+    navigate("/project");
+  };
+
+  const navigateToUsers = () => {
+    if (!id) return navigate("/login");
+    navigate("/userlist");
+  };
 
   return (
     <AppBar position="fixed" sx={{}}>
@@ -96,6 +103,11 @@ export default function Navbar() {
                 <MenuItem
                   key={page}
                   onClick={() => {
+                    if (!id && (page === "Project" || page === "Users")) {
+                      navigate("/login");
+                      handleCloseNavMenu();
+                      return;
+                    }
                     if (page === "Home") {
                       navigateToHome();
                     } else if (page === "Project") {
@@ -133,13 +145,17 @@ export default function Navbar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={() =>
+                onClick={() => {
+                  if (!id && (page === "Project" || page === "Users")) {
+                    navigate("/login");
+                    return;
+                  }
                   page === "Home"
                     ? navigateToHome()
                     : page === "Project"
                     ? navigateToProject()
-                    : navigateToUsers()
-                }
+                    : navigateToUsers();
+                }}
                 sx={{ my: 2, color: "inherit", display: "block" }}
               >
                 {page}
