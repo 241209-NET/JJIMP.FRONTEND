@@ -196,7 +196,7 @@ export default function Home() {
             Ready to Transform Your Workflow?
           </Typography>
           <Typography variant="h6" sx={{ mb: 4 }}>
-            Join teams already shipping faster with our platform
+            Join the BILLIONS of teams already shipping faster with our platform
           </Typography>
           <Button
             variant="contained"
