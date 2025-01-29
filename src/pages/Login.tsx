@@ -16,19 +16,19 @@ export default function Login() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { id, login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const { SnackAlert } = useSnackAlert();
-
-  // If the user is already logged in, redirect them to the home page
-  useEffect(() => {
-    if (!!id) navigate("/");
-  }, [id]);
 
   /** Handle form submission when user clicks login button */
   const handleLogin = async () => {
     setIsLoading(true);
     await login({ name, email, password });
+
+    navigate("/");
+
+    //refreshing app
+    window.location.reload();
 
     setIsLoading(false);
   };

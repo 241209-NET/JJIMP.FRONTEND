@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import { useCurrentUserStore } from "../util/store/currentUserStore";
 import {
   Box,
   Button,
@@ -15,22 +14,11 @@ import {
   Comment,
   RocketLaunch,
   Login,
-  AppRegistration,
 } from "@mui/icons-material";
 
 export default function Home() {
   const navigate = useNavigate();
-  const { setCurrentUser } = useCurrentUserStore();
   const theme = useTheme();
-
-  const handleSimulatedLogin = () => {
-    setCurrentUser({
-      id: 42069,
-      name: "Test User",
-      email: "test@example.com",
-    });
-    navigate("/project");
-  };
 
   const handleSignUp = () => {
     navigate("/register");
@@ -91,10 +79,10 @@ export default function Home() {
               color="secondary"
               size="large"
               startIcon={<RocketLaunch />}
-              onClick={handleSimulatedLogin}
+              onClick={handleSignUp}
               sx={{ px: 4, py: 1.5 }}
             >
-              Try Live Demo
+              Sign up Today
             </Button>
             <Button
               variant="outlined"
@@ -105,16 +93,6 @@ export default function Home() {
               sx={{ px: 4, py: 1.5 }}
             >
               Log in
-            </Button>
-            <Button
-              variant="outlined"
-              color="inherit"
-              size="large"
-              startIcon={<AppRegistration />}
-              onClick={handleSignUp}
-              sx={{ px: 4, py: 1.5 }}
-            >
-              Sign Up
             </Button>
           </Box>
         </Container>
@@ -203,10 +181,10 @@ export default function Home() {
             color="primary"
             size="large"
             startIcon={<RocketLaunch />}
-            onClick={handleSimulatedLogin}
+            onClick={handleSignUp}
             sx={{ px: 6, py: 2, fontSize: "1.1rem" }}
           >
-            Start Free Demo Now
+            Sign up Now
           </Button>
         </Container>
       </Box>

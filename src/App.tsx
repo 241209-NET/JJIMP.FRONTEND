@@ -10,7 +10,6 @@ import IssueBoard from "./pages/IssueBoard";
 import UserList from "./pages/UserList";
 import Project2 from "./pages/Project2";
 import { useEffect } from "react";
-import { useAuth } from "./util/auth/AuthContext";
 import Profile from "./pages/Profile";
 import axios from "axios";
 import { useCurrentUserStore } from "./util/store/currentUserStore";
@@ -19,20 +18,19 @@ import { useUserStore } from "./util/store/userStore";
 import { useIssueStore } from "./util/store/issueStore";
 import { mapIssueStatus } from "./util/mockdata/mockData";
 
+const token = localStorage.getItem("token");
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 //Adding route protection
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { id } = useAuth();
-  if (!id) {
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
   return children;
 };
 
 const AuthRoute = ({ children }: { children: JSX.Element }) => {
-  const { id } = useAuth();
-  if (id) {
+  if (token) {
     return <Navigate to="/" replace />;
   }
   return children;
@@ -47,7 +45,6 @@ export default function App() {
   useEffect(() => {
     //autologin
     const autoLogin = async () => {
-      const token = localStorage.getItem("token");
       if (token) {
         try {
           // Fetch user details using the new "current" endpoint
@@ -67,8 +64,6 @@ export default function App() {
       }
     };
     autoLogin();
-
-    // if there's a user logged in
 
     //fetch users,projects,issues and store in zustand
     const fetchProjects = async () => {
@@ -105,9 +100,11 @@ export default function App() {
       }
     };
 
-    fetchIssues();
-    fetchProjects();
-    fetchUsers();
+    if (token) {
+      fetchIssues();
+      fetchProjects();
+      fetchUsers();
+    }
   }, []);
 
   return (
