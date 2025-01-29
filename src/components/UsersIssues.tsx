@@ -8,16 +8,12 @@ import {
   Box,
 } from "@mui/material";
 
-function UsersIssues() {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+interface UsersIssuesProp {
+  issues?: Issue[];
+}
 
-  const Issues = [
-    { id: 2, description: "This is my 2nd recent issue" },
-    { id: 3, description: "This is my 3rd recent issue" },
-    { id: 4, description: "This is my 4th recent issue" },
-    { id: 5, description: "This is my 5th recent issue" },
-    { id: 6, description: "This is my most recent issue" },
-  ];
+const UsersIssues: React.FC<UsersIssuesProp> = ({ issues }) => {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   return (
     <Paper
@@ -36,11 +32,9 @@ function UsersIssues() {
       </Typography>
       <Divider sx={{ mb: 2 }} />
 
-      {Issues.length === 0 ? (
-        <Typography color="textSecondary">No Issues Found</Typography>
-      ) : (
+      {issues && issues.length > 0 ? (
         <List disablePadding>
-          {Issues.map((issue) => (
+          {issues.map((issue) => (
             <ListItemButton
               key={issue.id}
               selected={selectedIndex === issue.id}
@@ -61,9 +55,11 @@ function UsersIssues() {
             </ListItemButton>
           ))}
         </List>
+      ) : (
+        <Typography color="textSecondary">No Issues Found</Typography>
       )}
     </Paper>
   );
-}
+};
 
 export default UsersIssues;

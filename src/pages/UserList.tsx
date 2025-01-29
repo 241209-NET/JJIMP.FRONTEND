@@ -129,7 +129,7 @@ function UserList() {
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             Recent Issues
           </Typography>
-          <UsersIssues />
+          <UsersIssues issues={selectedUser.assignedIssues} />
         </Box>
       </Drawer>
     </Box>
