@@ -24,10 +24,7 @@ const IssueBoard: React.FC<IssueBoardProps> = ({ projectId }) => {
     if (!result.destination) return;
     const { draggableId, destination } = result;
     const issueID = parseInt(draggableId);
-    console.log(issueID);
     const updatedIssue = issues.find((iss) => iss.id === issueID);
-
-    console.log(updatedIssue);
     const numericStatus =
       updatedIssue && mapStatusToNumber(destination.droppableId as IssueStatus);
 
@@ -35,8 +32,6 @@ const IssueBoard: React.FC<IssueBoardProps> = ({ projectId }) => {
       id: updatedIssue.id,
       status: numericStatus,
     };
-
-    console.log(payload);
 
     try {
       await axios.put(`${baseURL}/api/Issue`, payload, {
