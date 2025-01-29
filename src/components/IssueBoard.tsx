@@ -12,9 +12,6 @@ interface IssueBoardProps {
 
 const IssueBoard: React.FC<IssueBoardProps> = ({ projectId }) => {
   const { issues, updateIssue } = useIssueStore();
-
-  console.log(issues);
-  console.log(projectId);
   const filteredIssues = issues.filter(
     (issue) => issue.projectId === projectId
   );
