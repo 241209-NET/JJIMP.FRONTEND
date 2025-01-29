@@ -11,7 +11,7 @@ import {
 
 interface MessageProps {
   users: User[];
-  selectedUser: User;
+  selectedUser: User | null;
   setSelectedUser: (user: User) => void;
 }
 
@@ -20,6 +20,23 @@ const Message: React.FC<MessageProps> = ({
   selectedUser,
   setSelectedUser,
 }) => {
+  if (!selectedUser) {
+    return (
+      <Box sx={{ textAlign: "center", mt: 4 }}>
+        <Typography>No user selected yet or loading...</Typography>
+      </Box>
+    );
+  }
+
+  // 2) If your user list might also be empty, handle that:
+  if (!users || users.length === 0) {
+    return (
+      <Box sx={{ textAlign: "center", mt: 4 }}>
+        <Typography>No users found.</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -53,31 +70,28 @@ const Message: React.FC<MessageProps> = ({
           </Typography>
           <Divider sx={{ mb: 2 }} />
 
-          {users.length === 0 ? (
-            <Typography color="textSecondary">No Users Found!</Typography>
-          ) : (
-            <List disablePadding>
-              {users.map((user) => (
-                <ListItemButton
-                  key={user.id}
-                  selected={selectedUser.id === user.id}
-                  onClick={() => setSelectedUser(user)}
-                  sx={{
-                    borderRadius: 1,
-                    py: 1,
-                    "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
-                    "&.Mui-selected": {
-                      backgroundColor: "primary.dark",
-                      color: "inherit",
-                      "&:hover": { backgroundColor: "secondary.dark" },
-                    },
-                  }}
-                >
-                  <Typography variant="body1">{user.name}</Typography>
-                </ListItemButton>
-              ))}
-            </List>
-          )}
+          <List disablePadding>
+            {users.map((user) => (
+              <ListItemButton
+                key={user.id}
+                // Use optional chaining so it doesn't crash if selectedUser is undefined
+                selected={selectedUser?.id === user.id}
+                onClick={() => setSelectedUser(user)}
+                sx={{
+                  borderRadius: 1,
+                  py: 1,
+                  "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                  "&.Mui-selected": {
+                    backgroundColor: "primary.dark",
+                    color: "inherit",
+                    "&:hover": { backgroundColor: "secondary.dark" },
+                  },
+                }}
+              >
+                <Typography variant="body1">{user.name}</Typography>
+              </ListItemButton>
+            ))}
+          </List>
         </Paper>
 
         {/* User Profile Section */}
@@ -106,7 +120,7 @@ const Message: React.FC<MessageProps> = ({
             />
           </Stack>
 
-          {/* User Information */}
+          {/* User Information (safe because we returned early if !selectedUser) */}
           <Typography variant="body1">
             <strong>Name:</strong> {selectedUser.name}
           </Typography>

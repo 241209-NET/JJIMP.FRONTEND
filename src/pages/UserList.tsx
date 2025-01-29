@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Typography, Drawer, Box, Paper, Stack } from "@mui/material";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import CommentIcon from "@mui/icons-material/Comment";
@@ -15,7 +15,12 @@ function UserList() {
   const [openComments, setOpenComments] = useState(false);
   const [openIssues, setOpenIssues] = useState(false);
   const { users } = useUserStore();
-  const [selectedUser, setSelectedUser] = useState(users[0]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  useEffect(() => {
+    if (users.length > 0 && !selectedUser) {
+      setSelectedUser(users[0]);
+    }
+  }, [users, selectedUser]);
 
   return (
     <Box sx={{ maxWidth: 1400, mx: "auto", py: 4 }}>
@@ -101,7 +106,7 @@ function UserList() {
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             Assigned Projects
           </Typography>
-          <UsersProjects projects={selectedUser.projects} />
+          <UsersProjects projects={selectedUser?.projects ?? []} />
         </Box>
       </Drawer>
 
@@ -115,7 +120,7 @@ function UserList() {
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             User's Recent Comments
           </Typography>
-          <UsersComments comments={selectedUser.comments} />
+          <UsersComments comments={selectedUser?.comments ?? []} />
         </Box>
       </Drawer>
 
@@ -129,7 +134,7 @@ function UserList() {
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             Recent Issues
           </Typography>
-          <UsersIssues issues={selectedUser.assignedIssues} />
+          <UsersIssues issues={selectedUser?.assignedIssues ?? []} />
         </Box>
       </Drawer>
     </Box>
