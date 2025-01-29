@@ -12,6 +12,8 @@ import Project2 from "./pages/Project2";
 import { useEffect } from "react";
 import { useAuth } from "./util/auth/AuthContext";
 import Profile from "./pages/Profile";
+import axios from "axios";
+import { useCurrentUserStore } from "./util/store/currentUserStore";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -33,9 +35,33 @@ const AuthRoute = ({ children }: { children: JSX.Element }) => {
 };
 
 export default function App() {
+  const { currentUser, setCurrentUser } = useCurrentUserStore();
   useEffect(() => {
     //fetch users,projects,issues
     //store in zustand
+
+    //autologin
+    const autoLogin = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          // Fetch user details using the new "current" endpoint
+          const userResponse = await axios.get<User>(
+            `${baseURL}/api/User/current`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          // Set the current user and fetch tweets
+          setCurrentUser(userResponse.data);
+        } catch (error) {
+          console.error("Auto-login error:", error);
+          localStorage.removeItem("token"); // Remove invalid token if auto-login fails
+        }
+      }
+    };
+    autoLogin();
   }, []);
 
   return (
