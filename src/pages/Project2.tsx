@@ -113,9 +113,22 @@ export default function ProjectTable() {
   };
 
   //delete action
-  const handleDeleteProject = () => {
-    if (selectedProject !== null) {
+  const handleDeleteProject = async () => {
+    if (!selectedProject) return;
+
+    console.log(selectedProject.id);
+    try {
+      const response = await axios.delete(
+        `${baseURL}/api/Project/${selectedProject.id}`
+      );
+      const deletedProject = response.data.name;
+
+      alert(`${deletedProject} deleted successfully!`);
+
       deleteProject(selectedProject.id);
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      alert("Failed to delete project.");
     }
     handleCloseMenu();
   };
