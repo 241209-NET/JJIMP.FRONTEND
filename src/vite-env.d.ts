@@ -8,7 +8,7 @@ interface User {
   projects?: Project[];
   createdIssues?: Issue[];
   assignedIssues?: Issue[];
-  comments?: Comment[];
+  comments?: IssueComment[];
   managedProjects?: Project[];
   last_activity?: string | Date;
   created_at?: string | Date;

@@ -8,16 +8,12 @@ import {
   Box,
 } from "@mui/material";
 
-function UsersComments() {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+interface UsersCommentsProp {
+  comments?: IssueComment[];
+}
 
-  const Comments = [
-    { id: 2, content: "This is my 2nd recent comment" },
-    { id: 3, content: "This is my 3rd recent comment" },
-    { id: 4, content: "This is my 4th recent comment" },
-    { id: 5, content: "This is my 5th recent comment" },
-    { id: 6, content: "This is my most recent comment" },
-  ];
+const UsersComments: React.FC<UsersCommentsProp> = ({ comments }) => {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   return (
     <Paper
@@ -36,11 +32,9 @@ function UsersComments() {
       </Typography>
       <Divider sx={{ mb: 2 }} />
 
-      {Comments.length === 0 ? (
-        <Typography color="textSecondary">No Comments Found</Typography>
-      ) : (
+      {comments && comments.length > 0 ? (
         <List disablePadding>
-          {Comments.map((comment) => (
+          {comments.map((comment) => (
             <ListItemButton
               key={comment.id}
               selected={selectedIndex === comment.id}
@@ -61,9 +55,11 @@ function UsersComments() {
             </ListItemButton>
           ))}
         </List>
+      ) : (
+        <Typography color="textSecondary">No Comments Found</Typography>
       )}
     </Paper>
   );
-}
+};
 
 export default UsersComments;

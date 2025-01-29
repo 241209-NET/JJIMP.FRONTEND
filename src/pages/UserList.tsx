@@ -115,7 +115,7 @@ function UserList() {
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             User's Recent Comments
           </Typography>
-          <UsersComments />
+          <UsersComments comments={selectedUser.comments} />
         </Box>
       </Drawer>
 
