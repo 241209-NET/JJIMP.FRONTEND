@@ -2,11 +2,14 @@ import { useIssueStore } from "../util/store/issueStore";
 import { useEffect, useState } from "react";
 import { Drawer, Box, Typography, TextField, Button } from "@mui/material";
 import CommentList from "./CommentList";
+import axios from "axios";
 
 interface IssueDrawerProps {
   issueId: number | null;
   onClose: () => void;
 }
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const IssueDrawer: React.FC<IssueDrawerProps> = ({ issueId, onClose }) => {
   const { issues, updateIssue } = useIssueStore();
@@ -32,7 +35,22 @@ const IssueDrawer: React.FC<IssueDrawerProps> = ({ issueId, onClose }) => {
   if (!issue) return null;
 
   //PUT request goes here
-  const handleUpdateDescription = () => {
+  const handleUpdateDescription = async () => {
+    const updatedIssue = issue;
+
+    const payload = updatedIssue && {
+      id: issueId,
+      description: description,
+    };
+
+    try {
+      await axios.put(`${baseURL}/api/Issue`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error) {
+      console.error("PUT request failed:", error);
+    }
+
     updateIssue(issue.id, { description });
     setUpdating(false);
   };
