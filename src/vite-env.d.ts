@@ -46,7 +46,7 @@ interface Issue {
   assignee: User;
   deadline?: string | Date;
   projectId: number;
-  comments: number[];
+  comments?: IssueComment[];
   created_by: User;
   created_at?: string | Date;
   updated_at?: string | Date;
@@ -55,8 +55,8 @@ interface Issue {
 interface IssueComment {
   id: number;
   content: string;
-  issue_id: number;
-  posted_by: number;
-  created_at?: string | Date;
-  updated_at?: string | Date;
+  issueId: number;
+  postedBy: User;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
