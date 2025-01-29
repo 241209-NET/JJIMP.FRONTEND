@@ -17,7 +17,7 @@ import { useCurrentUserStore } from "./util/store/currentUserStore";
 import { useProjectStore } from "./util/store/projectStore";
 import { useUserStore } from "./util/store/userStore";
 import { useIssueStore } from "./util/store/issueStore";
-import { IssueStatus, mapIssueStatus } from "./util/mockdata/mockData";
+import { mapIssueStatus } from "./util/mockdata/mockData";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
