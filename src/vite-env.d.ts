@@ -5,11 +5,11 @@ interface User {
   name: string;
   email: string;
   password?: string;
-  projects?: Project[] | [];
-  createdIssues?: Issue[] | [];
-  assignedIssues?: Issue[] | [];
-  comments?: Comment[] | [];
-  managedProjects?: Project[] | [];
+  projects?: Project[];
+  createdIssues?: Issue[];
+  assignedIssues?: Issue[];
+  comments?: Comment[];
+  managedProjects?: Project[];
   last_activity?: string | Date;
   created_at?: string | Date;
   updated_at?: string | Date;

@@ -101,7 +101,7 @@ function UserList() {
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             Assigned Projects
           </Typography>
-          <UsersProjects />
+          <UsersProjects projects={selectedUser.projects} />
         </Box>
       </Drawer>
 
