@@ -1,7 +1,10 @@
 import { createContext, ReactNode, useContext } from "react";
 import { IUserLoginDTO, IUserRegisterDTO } from "../types/User";
-import { axiosInstance } from "../axios";
+
 import { useCurrentUserStore } from "../store/currentUserStore";
+import axios from "axios";
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 export type AuthContextType = {
   id: number | null;
@@ -19,25 +22,56 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     useCurrentUserStore();
 
   const register = async (registerDTO: IUserRegisterDTO) => {
+    if (!registerDTO.name.trim() || !registerDTO.password.trim()) return false;
     try {
-      await axiosInstance.post("trainer", registerDTO);
-      return await login({
-        email: registerDTO.email,
-        password: registerDTO.password,
-      });
-    } catch (err) {
-      console.error(err);
+      const response = await axios.post<User>(
+        `${baseURL}/api/User`,
+        registerDTO
+      );
+      if (response.data) {
+        setCurrentUser(response.data);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Register error:", error);
+      alert("Error creating user. Try a different username.");
       return false;
     }
   };
 
   const login = async (loginDTO: IUserLoginDTO) => {
     try {
-      const { data } = await axiosInstance.post("/trainer/login", loginDTO);
-      setCurrentUser(data);
-      return true;
-    } catch (err) {
-      console.error(err);
+      // Send login request to the backend
+      const response = await axios.post<{ token: string; user: User }>(
+        `${baseURL}/api/User/login`,
+        loginDTO
+      );
+
+      if (response.data) {
+        // Destructure the token and user
+        const { token, user } = response.data;
+
+        if (!token || !user) {
+          throw new Error("Invalid login response");
+        }
+
+        // Store the token in localStorage
+        localStorage.setItem("token", token);
+
+        // Set the current user
+        setCurrentUser(user);
+        return true;
+      }
+      return false;
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error("Login error:", error);
+      alert(
+        error.response?.data?.message ||
+          "Invalid credentials or user not found."
+      );
       return false;
     }
   };

@@ -1,4 +1,5 @@
 export type IUserLoginDTO = {
+  name: string;
   email: string;
   password: string;
 };

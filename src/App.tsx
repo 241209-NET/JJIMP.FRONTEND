@@ -13,6 +13,8 @@ import { useEffect } from "react";
 import { useAuth } from "./util/auth/AuthContext";
 import Profile from "./pages/Profile";
 
+const baseURL = import.meta.env.VITE_BASE_URL;
+
 //Adding route protection
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { id } = useAuth();

@@ -4,6 +4,12 @@ interface User {
   id: number;
   name: string;
   email: string;
+  password?: string;
+  Projects?: Project[] | [];
+  CreatedIssues?: Issue[] | [];
+  AssignedIssues?: Issue[] | [];
+  Comments?: Comment[] | [];
+  ManagedProjects?: Project[] | [];
   last_activity?: string | Date;
   created_at?: string | Date;
   updated_at?: string | Date;

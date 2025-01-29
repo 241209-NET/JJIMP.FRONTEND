@@ -13,11 +13,12 @@ import { useSnackAlert } from "../components/SnackAlert";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { id, login } = useAuth();
   const navigate = useNavigate();
-  const { SnackAlert, alert } = useSnackAlert();
+  const { SnackAlert } = useSnackAlert();
 
   // If the user is already logged in, redirect them to the home page
   useEffect(() => {
@@ -27,12 +28,8 @@ export default function Login() {
   /** Handle form submission when user clicks login button */
   const handleLogin = async () => {
     setIsLoading(true);
-    const success = await login({ email, password });
-    if (!success) {
-      alert.setError(
-        "Failed to log in, ensure your username and password are valid"
-      );
-    }
+    await login({ name, email, password });
+
     setIsLoading(false);
   };
 
@@ -61,6 +58,13 @@ export default function Login() {
           }}
         >
           <Typography variant="h5">Existing user login</Typography>
+          <TextField
+            label="Name"
+            disabled={isLoading}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            sx={{ width: "30ch" }}
+          />
           <TextField
             label="Email"
             disabled={isLoading}
