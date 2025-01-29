@@ -33,11 +33,7 @@ const IssueBoard: React.FC<IssueBoardProps> = ({ projectId }) => {
 
     const payload = updatedIssue && {
       id: updatedIssue.id,
-      title: updatedIssue.title,
-      description: updatedIssue.description,
       status: numericStatus,
-      deadline: updatedIssue.deadline,
-      assigneeId: updatedIssue.assignee.id,
     };
 
     console.log(payload);
