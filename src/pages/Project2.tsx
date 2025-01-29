@@ -28,6 +28,9 @@ import { useProjectStore } from "../util/store/projectStore";
 import { useUserStore } from "../util/store/userStore";
 import { useNavigate } from "react-router";
 import { useCurrentUserStore } from "../util/store/currentUserStore";
+import axios from "axios";
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const headCells = [
   { id: "name", label: "Project", numeric: false },
@@ -93,20 +96,28 @@ export default function ProjectTable() {
   };
 
   // posting endpoint gets called here
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newProject = {
-      id: Date.now(),
-      ...formData,
-    };
+    try {
+      const response = await axios.post(`${baseURL}/api/Project`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      addProject(response.data);
+      setFormData({
+        name: "",
+        description: "",
+        projectManagerId: currentUser?.id,
+      });
+      setOpen(false);
 
-    addProject(newProject);
-    setFormData({
-      name: "",
-      description: "",
-      projectManagerId: currentUser?.id,
-    });
-    setOpen(false);
+      console.log("Project Created:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating project:", error);
+      throw error;
+    }
   };
 
   return (
