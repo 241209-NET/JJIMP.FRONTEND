@@ -50,8 +50,7 @@ export default function ProjectTable() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    project_manager: currentUser?.id,
-    user_id: [],
+    projectManagerId: currentUser?.id,
   });
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
@@ -76,14 +75,7 @@ export default function ProjectTable() {
 
   // Put action for project
   const handleAssignUser = (userId: number) => {
-    if (selectedProject !== null) {
-      const project = projects.find((p) => p.id === selectedProject);
-      if (project) {
-        updateProject(selectedProject, {
-          user_id: [...project.user_id, userId],
-        });
-      }
-    }
+    console.log(userId);
     handleCloseMenu();
   };
 
@@ -106,15 +98,13 @@ export default function ProjectTable() {
     const newProject = {
       id: Date.now(),
       ...formData,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
     };
+
     addProject(newProject);
     setFormData({
       name: "",
       description: "",
-      project_manager: currentUser?.id,
-      user_id: [],
+      projectManagerId: currentUser?.id,
     });
     setOpen(false);
   };
@@ -194,8 +184,10 @@ export default function ProjectTable() {
                       {project.name}
                     </TableCell>
                     <TableCell>{project.description}</TableCell>
-                    <TableCell>{project.project_manager}</TableCell>
-                    <TableCell>{project.user_id.join(", ")}</TableCell>
+                    <TableCell>{project.projectManager?.name}</TableCell>
+                    <TableCell>
+                      {project.users?.map((u) => u.name).join(", ")}
+                    </TableCell>
                     <TableCell>
                       <IconButton
                         onClick={(event) => handleOpenMenu(event, project.id)}

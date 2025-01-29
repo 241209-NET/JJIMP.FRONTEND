@@ -7,12 +7,15 @@ import UsersInfo from "../components/UsersInfo";
 import UsersComments from "../components/UsersComments";
 import UsersIssues from "../components/UsersIssues";
 import UsersProjects from "../components/UsersProjects";
+import { useUserStore } from "../util/store/userStore";
 
 function UserList() {
   // Drawer states
   const [openProjects, setOpenProjects] = useState(false);
   const [openComments, setOpenComments] = useState(false);
   const [openIssues, setOpenIssues] = useState(false);
+  const { users } = useUserStore();
+  const [selectedUser, setSelectedUser] = useState(users[0]);
 
   return (
     <Box sx={{ maxWidth: 1400, mx: "auto", py: 4 }}>
@@ -38,7 +41,11 @@ function UserList() {
           boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
         }}
       >
-        <UsersInfo />
+        <UsersInfo
+          users={users}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+        />
       </Paper>
 
       {/* Button Group to Open Drawers */}

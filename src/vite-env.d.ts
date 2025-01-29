@@ -5,11 +5,11 @@ interface User {
   name: string;
   email: string;
   password?: string;
-  Projects?: Project[] | [];
-  CreatedIssues?: Issue[] | [];
-  AssignedIssues?: Issue[] | [];
-  Comments?: Comment[] | [];
-  ManagedProjects?: Project[] | [];
+  projects?: Project[] | [];
+  createdIssues?: Issue[] | [];
+  assignedIssues?: Issue[] | [];
+  comments?: Comment[] | [];
+  managedProjects?: Project[] | [];
   last_activity?: string | Date;
   created_at?: string | Date;
   updated_at?: string | Date;
@@ -18,11 +18,20 @@ interface Project {
   id: number;
   name: string;
   description: string;
-  project_manager: number | undefined;
-  user_id: number[];
+  projectManager?: User;
+  projectManagerId: number | undefined | null;
+  users?: User[];
+  issues?: Issue[];
   created_at?: string | Date;
   updated_at?: string | Date;
 }
+
+interface ProjectForm {
+  name: string;
+  description: string;
+  projectManagerId: number | undefined | null;
+}
+
 enum IssueStatus {
   Inactive = "Inactive",
   Active = "Active",

@@ -14,6 +14,8 @@ import { useAuth } from "./util/auth/AuthContext";
 import Profile from "./pages/Profile";
 import axios from "axios";
 import { useCurrentUserStore } from "./util/store/currentUserStore";
+import { useProjectStore } from "./util/store/projectStore";
+import { useUserStore } from "./util/store/userStore";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -35,11 +37,10 @@ const AuthRoute = ({ children }: { children: JSX.Element }) => {
 };
 
 export default function App() {
-  const { currentUser, setCurrentUser } = useCurrentUserStore();
+  const { setCurrentUser } = useCurrentUserStore();
+  const { setProjects } = useProjectStore();
+  const { setUsers } = useUserStore();
   useEffect(() => {
-    //fetch users,projects,issues
-    //store in zustand
-
     //autologin
     const autoLogin = async () => {
       const token = localStorage.getItem("token");
@@ -62,6 +63,30 @@ export default function App() {
       }
     };
     autoLogin();
+
+    // if there's a user logged in
+
+    //fetch users,projects,issues and store in zustand
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get<Project[]>(`${baseURL}/api/Project`);
+        setProjects(response.data);
+      } catch (error) {
+        console.error("Error fetching Projects:", error);
+      }
+    };
+
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get<User[]>(`${baseURL}/api/User`);
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching Projects:", error);
+      }
+    };
+
+    fetchProjects();
+    fetchUsers();
   }, []);
 
   return (

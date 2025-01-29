@@ -10,64 +10,17 @@ import {
   Avatar,
 } from "@mui/material";
 
-function Message() {
-  const d = "2021-03-25";
-  const dOne = "2025-01-25";
-  const dTwo = "1990-03-25";
+interface MessageProps {
+  users: User[];
+  selectedUser: User;
+  setSelectedUser: (user: User) => void;
+}
 
-  let Users = [
-    {
-      id: 1,
-      name: "Marlis",
-      email: "marc@gooseribbon.com",
-      last_activity: d,
-      created_at: d,
-      updated_at: dOne,
-    },
-    {
-      id: 2,
-      name: "Cuong",
-      email: "sales@gooseribbon.com",
-      last_activity: d,
-      created_at: dTwo,
-      updated_at: d,
-    },
-    {
-      id: 3,
-      name: "Jude",
-      email: "contact@gooseribbon.com",
-      last_activity: dOne,
-      created_at: d,
-      updated_at: dTwo,
-    },
-    {
-      id: 4,
-      name: "Issac",
-      email: "newsletter@gooseribbon.com",
-      last_activity: dTwo,
-      created_at: dOne,
-      updated_at: dTwo,
-    },
-    {
-      id: 5,
-      name: "Jason",
-      email: "newsletter@gooseribbon.com",
-      last_activity: dOne,
-      created_at: dOne,
-      updated_at: d,
-    },
-    {
-      id: 6,
-      name: "Puneet",
-      email: "newsletter@gooseribbon.com",
-      last_activity: d,
-      created_at: dOne,
-      updated_at: dTwo,
-    },
-  ];
-
-  const [selectedUser, setSelectedUser] = useState(Users[0]);
-
+const Message: React.FC<MessageProps> = ({
+  users,
+  selectedUser,
+  setSelectedUser,
+}) => {
   return (
     <Box
       sx={{
@@ -101,11 +54,11 @@ function Message() {
           </Typography>
           <Divider sx={{ mb: 2 }} />
 
-          {Users.length === 0 ? (
+          {users.length === 0 ? (
             <Typography color="textSecondary">No Users Found!</Typography>
           ) : (
             <List disablePadding>
-              {Users.map((user) => (
+              {users.map((user) => (
                 <ListItemButton
                   key={user.id}
                   selected={selectedUser.id === user.id}
@@ -161,19 +114,10 @@ function Message() {
           <Typography variant="body1">
             <strong>Email:</strong> {selectedUser.email}
           </Typography>
-          <Typography variant="body1">
-            <strong>Last Activity:</strong> {selectedUser.last_activity}
-          </Typography>
-          <Typography variant="body1">
-            <strong>Created At:</strong> {selectedUser.created_at}
-          </Typography>
-          <Typography variant="body1">
-            <strong>Updated At:</strong> {selectedUser.updated_at}
-          </Typography>
         </Paper>
       </Box>
     </Box>
   );
-}
+};
 
 export default Message;
