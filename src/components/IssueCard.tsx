@@ -28,9 +28,7 @@ const IssueCard: React.FC<IssueCardProps> = ({ issue, index }) => {
             <h4 className="font-semibold">{issue.title}</h4>
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Assignee:{" "}
-              {issue.assignee.length > 0
-                ? issue.assignee.join(", ")
-                : "Unassigned"}
+              {issue.assignee.name ? issue.assignee.name : "Unassigned"}
             </p>
           </div>
         )}

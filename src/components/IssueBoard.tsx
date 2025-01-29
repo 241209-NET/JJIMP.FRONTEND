@@ -10,8 +10,10 @@ interface IssueBoardProps {
 const IssueBoard: React.FC<IssueBoardProps> = ({ projectId }) => {
   const { issues, updateIssue } = useIssueStore();
 
+  console.log(issues);
+  console.log(projectId);
   const filteredIssues = issues.filter(
-    (issue) => issue.project_id === projectId
+    (issue) => issue.projectId === projectId
   );
 
   //PUT request goes here for status

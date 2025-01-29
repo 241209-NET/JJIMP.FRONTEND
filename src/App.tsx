@@ -16,6 +16,8 @@ import axios from "axios";
 import { useCurrentUserStore } from "./util/store/currentUserStore";
 import { useProjectStore } from "./util/store/projectStore";
 import { useUserStore } from "./util/store/userStore";
+import { useIssueStore } from "./util/store/issueStore";
+import { IssueStatus } from "./util/mockdata/mockData";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -40,6 +42,18 @@ export default function App() {
   const { setCurrentUser } = useCurrentUserStore();
   const { setProjects } = useProjectStore();
   const { setUsers } = useUserStore();
+  const { setIssues } = useIssueStore();
+
+  const mapIssueStatus = (status: number): IssueStatus => {
+    const statusMap: { [key: number]: IssueStatus } = {
+      0: IssueStatus.Inactive,
+      1: IssueStatus.Active,
+      2: IssueStatus.Review,
+      3: IssueStatus.Complete,
+    };
+    return statusMap[status] || IssueStatus.Inactive; // Default to Inactive if undefined
+  };
+
   useEffect(() => {
     //autologin
     const autoLogin = async () => {
@@ -81,10 +95,27 @@ export default function App() {
         const response = await axios.get<User[]>(`${baseURL}/api/User`);
         setUsers(response.data);
       } catch (error) {
-        console.error("Error fetching Projects:", error);
+        console.error("Error fetching Users:", error);
       }
     };
 
+    const fetchIssues = async () => {
+      try {
+        const response = await axios.get<Issue[]>(`${baseURL}/api/Issue`);
+
+        // Map the response to adjust the status field
+        const adjustedIssues = response.data.map((issue) => ({
+          ...issue,
+          status: mapIssueStatus(issue.status as unknown as number), // Convert status from number to enum
+        }));
+
+        setIssues(adjustedIssues);
+      } catch (error) {
+        console.error("Error fetching Issues:", error);
+      }
+    };
+
+    fetchIssues();
     fetchProjects();
     fetchUsers();
   }, []);

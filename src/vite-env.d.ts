@@ -43,11 +43,11 @@ interface Issue {
   title: string;
   description: string;
   status: IssueStatus;
-  assignee: number[];
+  assignee: User;
   deadline?: string | Date;
-  project_id: number;
+  projectId: number;
   comments: number[];
-  created_by: number;
+  created_by: User;
   created_at?: string | Date;
   updated_at?: string | Date;
   commentObjs?: IssueComment[];
