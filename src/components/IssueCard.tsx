@@ -26,12 +26,18 @@ const IssueCard: React.FC<IssueCardProps> = ({ issue, index }) => {
             onClick={() => setSelectedIssue(issue.id)}
           >
             <h4 className="font-semibold">{issue.title}</h4>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Assignee:{" "}
-              {issue.assignee.length > 0
-                ? issue.assignee.join(", ")
-                : "Unassigned"}
-            </p>
+            <div className="flex-wrap lg:flex justify-between">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                <strong> Assignee:</strong>{" "}
+                {issue.assignee?.name ?? "Unassigned"}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                <strong> Deadline:</strong>{" "}
+                {issue.deadline
+                  ? new Date(issue.deadline).toLocaleDateString()
+                  : "Unassigned"}
+              </p>
+            </div>
           </div>
         )}
       </Draggable>

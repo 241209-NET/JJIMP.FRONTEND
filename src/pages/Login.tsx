@@ -6,33 +6,30 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../util/auth/AuthContext";
 import { Link, useNavigate } from "react-router";
 import { useSnackAlert } from "../components/SnackAlert";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { id, login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const { SnackAlert, alert } = useSnackAlert();
-
-  // If the user is already logged in, redirect them to the home page
-  useEffect(() => {
-    if (!!id) navigate("/");
-  }, [id]);
+  const { SnackAlert } = useSnackAlert();
 
   /** Handle form submission when user clicks login button */
   const handleLogin = async () => {
     setIsLoading(true);
-    const success = await login({ email, password });
-    if (!success) {
-      alert.setError(
-        "Failed to log in, ensure your username and password are valid"
-      );
-    }
+    await login({ name, email, password });
+
+    navigate("/");
+
+    //refreshing app
+    window.location.reload();
+
     setIsLoading(false);
   };
 
@@ -61,6 +58,13 @@ export default function Login() {
           }}
         >
           <Typography variant="h5">Existing user login</Typography>
+          <TextField
+            label="Name"
+            disabled={isLoading}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            sx={{ width: "30ch" }}
+          />
           <TextField
             label="Email"
             disabled={isLoading}

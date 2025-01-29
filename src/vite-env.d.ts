@@ -4,6 +4,12 @@ interface User {
   id: number;
   name: string;
   email: string;
+  password?: string;
+  projects?: Project[];
+  createdIssues?: Issue[];
+  assignedIssues?: Issue[];
+  comments?: IssueComment[];
+  managedProjects?: Project[];
   last_activity?: string | Date;
   created_at?: string | Date;
   updated_at?: string | Date;
@@ -12,11 +18,20 @@ interface Project {
   id: number;
   name: string;
   description: string;
-  project_manager: number | undefined;
-  user_id: number[];
+  projectManager?: User;
+  projectManagerId: number | undefined | null;
+  users?: User[];
+  issues?: Issue[];
   created_at?: string | Date;
   updated_at?: string | Date;
 }
+
+interface ProjectForm {
+  name: string;
+  description: string;
+  projectManagerId: number | undefined | null;
+}
+
 enum IssueStatus {
   Inactive = "Inactive",
   Active = "Active",
@@ -28,11 +43,11 @@ interface Issue {
   title: string;
   description: string;
   status: IssueStatus;
-  assignee: number[];
+  assignee: User;
   deadline?: string | Date;
-  project_id: number;
-  comments: number[];
-  created_by: number;
+  projectId: number;
+  comments?: IssueComment[];
+  created_by: User;
   created_at?: string | Date;
   updated_at?: string | Date;
   commentObjs?: IssueComment[];
@@ -40,8 +55,8 @@ interface Issue {
 interface IssueComment {
   id: number;
   content: string;
-  issue_id: number;
-  posted_by: number;
-  created_at?: string | Date;
-  updated_at?: string | Date;
+  issueId: number;
+  postedBy: User;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }

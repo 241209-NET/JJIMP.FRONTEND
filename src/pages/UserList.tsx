@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Typography, Drawer, Box, Paper, Stack } from "@mui/material";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import CommentIcon from "@mui/icons-material/Comment";
@@ -7,12 +7,20 @@ import UsersInfo from "../components/UsersInfo";
 import UsersComments from "../components/UsersComments";
 import UsersIssues from "../components/UsersIssues";
 import UsersProjects from "../components/UsersProjects";
+import { useUserStore } from "../util/store/userStore";
 
 function UserList() {
   // Drawer states
   const [openProjects, setOpenProjects] = useState(false);
   const [openComments, setOpenComments] = useState(false);
   const [openIssues, setOpenIssues] = useState(false);
+  const { users } = useUserStore();
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  useEffect(() => {
+    if (users.length > 0 && !selectedUser) {
+      setSelectedUser(users[0]);
+    }
+  }, [users, selectedUser]);
 
   return (
     <Box sx={{ maxWidth: 1400, mx: "auto", py: 4 }}>
@@ -38,7 +46,11 @@ function UserList() {
           boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
         }}
       >
-        <UsersInfo />
+        <UsersInfo
+          users={users}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+        />
       </Paper>
 
       {/* Button Group to Open Drawers */}
@@ -94,7 +106,7 @@ function UserList() {
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             Assigned Projects
           </Typography>
-          <UsersProjects />
+          <UsersProjects projects={selectedUser?.projects ?? []} />
         </Box>
       </Drawer>
 
@@ -108,7 +120,7 @@ function UserList() {
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             User's Recent Comments
           </Typography>
-          <UsersComments />
+          <UsersComments comments={selectedUser?.comments ?? []} />
         </Box>
       </Drawer>
 
@@ -122,7 +134,7 @@ function UserList() {
           <Typography variant="h5" fontWeight="bold" gutterBottom>
             Recent Issues
           </Typography>
-          <UsersIssues />
+          <UsersIssues issues={selectedUser?.assignedIssues ?? []} />
         </Box>
       </Drawer>
     </Box>

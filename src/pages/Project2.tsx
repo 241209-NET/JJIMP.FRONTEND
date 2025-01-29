@@ -28,6 +28,9 @@ import { useProjectStore } from "../util/store/projectStore";
 import { useUserStore } from "../util/store/userStore";
 import { useNavigate } from "react-router";
 import { useCurrentUserStore } from "../util/store/currentUserStore";
+import axios from "axios";
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const headCells = [
   { id: "name", label: "Project", numeric: false },
@@ -50,11 +53,10 @@ export default function ProjectTable() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    project_manager: currentUser?.id,
-    user_id: [],
+    projectManagerId: currentUser?.id,
   });
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     // handle fetching data here on mount
@@ -63,10 +65,10 @@ export default function ProjectTable() {
   //these are the menu open and close functions
   const handleOpenMenu = (
     event: React.MouseEvent<HTMLButtonElement>,
-    projectId: number
+    project: Project
   ) => {
     setMenuAnchor(event.currentTarget);
-    setSelectedProject(projectId);
+    setSelectedProject(project);
   };
 
   const handleCloseMenu = () => {
@@ -75,22 +77,58 @@ export default function ProjectTable() {
   };
 
   // Put action for project
-  const handleAssignUser = (userId: number) => {
-    if (selectedProject !== null) {
-      const project = projects.find((p) => p.id === selectedProject);
-      if (project) {
-        updateProject(selectedProject, {
-          user_id: [...project.user_id, userId],
-        });
-      }
+  const handleAssignUser = async (userId: number, project: Project) => {
+    try {
+      // Extract only user IDs from the project
+      const assignedUserIds = project?.users?.map((user) => user.id);
+
+      // Check if user is already assigned
+      const isAssigned = assignedUserIds?.includes(userId);
+
+      // If assigned, remove them; otherwise, add them
+      const updatedUserIds = isAssigned
+        ? assignedUserIds?.filter((id) => id !== userId) // Remove user
+        : [...(assignedUserIds ?? []), userId]; // Add user
+
+      const payload = {
+        id: project.id,
+        userIds: updatedUserIds, // Send only IDs cause of the DTO
+      };
+
+      console.log("Sending update:", payload);
+
+      const response = await axios.put(`${baseURL}/api/Project`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      updateProject(project.id, response.data);
+
+      console.log("Project updated:", response.data);
+      alert("Users assigned successfully!");
+    } catch (error) {
+      console.error("Error updating project:", error);
+      alert("Failed to assign users.");
     }
     handleCloseMenu();
   };
 
   //delete action
-  const handleDeleteProject = () => {
-    if (selectedProject !== null) {
-      deleteProject(selectedProject);
+  const handleDeleteProject = async () => {
+    if (!selectedProject) return;
+
+    console.log(selectedProject.id);
+    try {
+      const response = await axios.delete(
+        `${baseURL}/api/Project/${selectedProject.id}`
+      );
+      const deletedProject = response.data.name;
+
+      alert(`${deletedProject} deleted successfully!`);
+
+      deleteProject(selectedProject.id);
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      alert("Failed to delete project.");
     }
     handleCloseMenu();
   };
@@ -101,22 +139,28 @@ export default function ProjectTable() {
   };
 
   // posting endpoint gets called here
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newProject = {
-      id: Date.now(),
-      ...formData,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-    addProject(newProject);
-    setFormData({
-      name: "",
-      description: "",
-      project_manager: currentUser?.id,
-      user_id: [],
-    });
-    setOpen(false);
+    try {
+      const response = await axios.post(`${baseURL}/api/Project`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      addProject(response.data);
+      setFormData({
+        name: "",
+        description: "",
+        projectManagerId: currentUser?.id,
+      });
+      setOpen(false);
+
+      console.log("Project Created:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating project:", error);
+      throw error;
+    }
   };
 
   return (
@@ -194,11 +238,13 @@ export default function ProjectTable() {
                       {project.name}
                     </TableCell>
                     <TableCell>{project.description}</TableCell>
-                    <TableCell>{project.project_manager}</TableCell>
-                    <TableCell>{project.user_id.join(", ")}</TableCell>
+                    <TableCell>{project.projectManager?.name}</TableCell>
+                    <TableCell>
+                      {project.users?.map((u) => u.name).join(", ")}
+                    </TableCell>
                     <TableCell>
                       <IconButton
-                        onClick={(event) => handleOpenMenu(event, project.id)}
+                        onClick={(event) => handleOpenMenu(event, project)}
                       >
                         <MoreVertIcon />
                       </IconButton>
@@ -207,15 +253,25 @@ export default function ProjectTable() {
                         open={Boolean(menuAnchor)}
                         onClose={handleCloseMenu}
                       >
-                        {users.length > 0 ? (
-                          users.map((user) => (
-                            <MenuItem
-                              key={user.id}
-                              onClick={() => handleAssignUser(user.id)}
-                            >
-                              Assign {user.name}
-                            </MenuItem>
-                          ))
+                        {users.length > 0 && selectedProject ? (
+                          users.map((user) => {
+                            const isAssigned = selectedProject.users?.some(
+                              (u) => u.id === user.id
+                            );
+
+                            return (
+                              <MenuItem
+                                key={user.id}
+                                onClick={() =>
+                                  handleAssignUser(user.id, selectedProject)
+                                }
+                              >
+                                {isAssigned
+                                  ? `Unassign ${user.name}`
+                                  : `Assign ${user.name}`}
+                              </MenuItem>
+                            );
+                          })
                         ) : (
                           <MenuItem disabled>No Users Available</MenuItem>
                         )}

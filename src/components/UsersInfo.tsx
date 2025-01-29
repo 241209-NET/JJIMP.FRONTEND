@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Paper,
@@ -10,63 +9,33 @@ import {
   Avatar,
 } from "@mui/material";
 
-function Message() {
-  const d = "2021-03-25";
-  const dOne = "2025-01-25";
-  const dTwo = "1990-03-25";
+interface MessageProps {
+  users: User[];
+  selectedUser: User | null;
+  setSelectedUser: (user: User) => void;
+}
 
-  let Users = [
-    {
-      id: 1,
-      name: "Marlis",
-      email: "marc@gooseribbon.com",
-      last_activity: d,
-      created_at: d,
-      updated_at: dOne,
-    },
-    {
-      id: 2,
-      name: "Cuong",
-      email: "sales@gooseribbon.com",
-      last_activity: d,
-      created_at: dTwo,
-      updated_at: d,
-    },
-    {
-      id: 3,
-      name: "Jude",
-      email: "contact@gooseribbon.com",
-      last_activity: dOne,
-      created_at: d,
-      updated_at: dTwo,
-    },
-    {
-      id: 4,
-      name: "Issac",
-      email: "newsletter@gooseribbon.com",
-      last_activity: dTwo,
-      created_at: dOne,
-      updated_at: dTwo,
-    },
-    {
-      id: 5,
-      name: "Jason",
-      email: "newsletter@gooseribbon.com",
-      last_activity: dOne,
-      created_at: dOne,
-      updated_at: d,
-    },
-    {
-      id: 6,
-      name: "Puneet",
-      email: "newsletter@gooseribbon.com",
-      last_activity: d,
-      created_at: dOne,
-      updated_at: dTwo,
-    },
-  ];
+const Message: React.FC<MessageProps> = ({
+  users,
+  selectedUser,
+  setSelectedUser,
+}) => {
+  if (!selectedUser) {
+    return (
+      <Box sx={{ textAlign: "center", mt: 4 }}>
+        <Typography>No user selected yet or loading...</Typography>
+      </Box>
+    );
+  }
 
-  const [selectedUser, setSelectedUser] = useState(Users[0]);
+  // 2) If your user list might also be empty, handle that:
+  if (!users || users.length === 0) {
+    return (
+      <Box sx={{ textAlign: "center", mt: 4 }}>
+        <Typography>No users found.</Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -101,31 +70,28 @@ function Message() {
           </Typography>
           <Divider sx={{ mb: 2 }} />
 
-          {Users.length === 0 ? (
-            <Typography color="textSecondary">No Users Found!</Typography>
-          ) : (
-            <List disablePadding>
-              {Users.map((user) => (
-                <ListItemButton
-                  key={user.id}
-                  selected={selectedUser.id === user.id}
-                  onClick={() => setSelectedUser(user)}
-                  sx={{
-                    borderRadius: 1,
-                    py: 1,
-                    "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
-                    "&.Mui-selected": {
-                      backgroundColor: "primary.dark",
-                      color: "inherit",
-                      "&:hover": { backgroundColor: "secondary.dark" },
-                    },
-                  }}
-                >
-                  <Typography variant="body1">{user.name}</Typography>
-                </ListItemButton>
-              ))}
-            </List>
-          )}
+          <List disablePadding>
+            {users.map((user) => (
+              <ListItemButton
+                key={user.id}
+                // Use optional chaining so it doesn't crash if selectedUser is undefined
+                selected={selectedUser?.id === user.id}
+                onClick={() => setSelectedUser(user)}
+                sx={{
+                  borderRadius: 1,
+                  py: 1,
+                  "&:hover": { backgroundColor: "rgba(0,0,0,0.05)" },
+                  "&.Mui-selected": {
+                    backgroundColor: "primary.dark",
+                    color: "inherit",
+                    "&:hover": { backgroundColor: "secondary.dark" },
+                  },
+                }}
+              >
+                <Typography variant="body1">{user.name}</Typography>
+              </ListItemButton>
+            ))}
+          </List>
         </Paper>
 
         {/* User Profile Section */}
@@ -154,26 +120,17 @@ function Message() {
             />
           </Stack>
 
-          {/* User Information */}
+          {/* User Information (safe because we returned early if !selectedUser) */}
           <Typography variant="body1">
             <strong>Name:</strong> {selectedUser.name}
           </Typography>
           <Typography variant="body1">
             <strong>Email:</strong> {selectedUser.email}
           </Typography>
-          <Typography variant="body1">
-            <strong>Last Activity:</strong> {selectedUser.last_activity}
-          </Typography>
-          <Typography variant="body1">
-            <strong>Created At:</strong> {selectedUser.created_at}
-          </Typography>
-          <Typography variant="body1">
-            <strong>Updated At:</strong> {selectedUser.updated_at}
-          </Typography>
         </Paper>
       </Box>
     </Box>
   );
-}
+};
 
 export default Message;

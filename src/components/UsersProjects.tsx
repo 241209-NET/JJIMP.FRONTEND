@@ -8,17 +8,12 @@ import {
   Box,
 } from "@mui/material";
 
-function UsersProjects() {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+interface UserProjectProps {
+  projects?: Project[];
+}
 
-  const Projects = [
-    { id: 2, description: "This is my 2nd recent project" },
-    { id: 3, description: "This is my 3rd recent project" },
-    { id: 4, description: "This is my 4th recent project" },
-    { id: 5, description: "This is my 5th recent project" },
-    { id: 6, description: "This is my most recent project" },
-    { id: 7, description: "This is my 7th recent project" },
-  ];
+const UsersProjects: React.FC<UserProjectProps> = ({ projects }) => {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   return (
     <Paper
@@ -37,11 +32,9 @@ function UsersProjects() {
       </Typography>
       <Divider sx={{ mb: 2 }} />
 
-      {Projects.length === 0 ? (
-        <Typography color="textSecondary">No Projects Found</Typography>
-      ) : (
+      {projects && projects?.length > 0 ? (
         <List disablePadding>
-          {Projects.map((project) => (
+          {projects?.map((project) => (
             <ListItemButton
               key={project.id}
               selected={selectedIndex === project.id}
@@ -53,7 +46,7 @@ function UsersProjects() {
             >
               <Box>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Project ID: {project.id}
+                  Project: {project.name}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                   {project.description}
@@ -62,9 +55,11 @@ function UsersProjects() {
             </ListItemButton>
           ))}
         </List>
+      ) : (
+        <Typography color="textSecondary">No Projects Found</Typography>
       )}
     </Paper>
   );
-}
+};
 
 export default UsersProjects;

@@ -1,7 +1,10 @@
-import { IssueStatus } from "../util/mockdata/mockData.ts";
+import axios from "axios";
+import { IssueStatus, mapStatusToNumber } from "../util/mockdata/mockData.ts";
 import { useIssueStore } from "../util/store/issueStore";
 import IssueColumn from "./IssueColumn.tsx";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 interface IssueBoardProps {
   projectId: number;
@@ -9,16 +12,33 @@ interface IssueBoardProps {
 
 const IssueBoard: React.FC<IssueBoardProps> = ({ projectId }) => {
   const { issues, updateIssue } = useIssueStore();
-
   const filteredIssues = issues.filter(
-    (issue) => issue.project_id === projectId
+    (issue) => issue.projectId === projectId
   );
 
   //PUT request goes here for status
-  const handleDragEnd = (result: DropResult) => {
+  const handleDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
     const { draggableId, destination } = result;
-    updateIssue(parseInt(draggableId), {
+    const issueID = parseInt(draggableId);
+    const updatedIssue = issues.find((iss) => iss.id === issueID);
+    const numericStatus =
+      updatedIssue && mapStatusToNumber(destination.droppableId as IssueStatus);
+
+    const payload = updatedIssue && {
+      id: updatedIssue.id,
+      status: numericStatus,
+    };
+
+    try {
+      await axios.put(`${baseURL}/api/Issue`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error) {
+      console.error("PUT request failed:", error);
+    }
+
+    updateIssue(issueID, {
       status: destination.droppableId as IssueStatus,
     });
   };

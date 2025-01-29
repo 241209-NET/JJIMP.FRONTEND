@@ -10,30 +10,101 @@ import IssueBoard from "./pages/IssueBoard";
 import UserList from "./pages/UserList";
 import Project2 from "./pages/Project2";
 import { useEffect } from "react";
-import { useAuth } from "./util/auth/AuthContext";
 import Profile from "./pages/Profile";
+import axios from "axios";
+import { useCurrentUserStore } from "./util/store/currentUserStore";
+import { useProjectStore } from "./util/store/projectStore";
+import { useUserStore } from "./util/store/userStore";
+import { useIssueStore } from "./util/store/issueStore";
+import { mapIssueStatus } from "./util/mockdata/mockData";
+
+const token = localStorage.getItem("token");
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 //Adding route protection
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { id } = useAuth();
-  if (!id) {
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
   return children;
 };
 
 const AuthRoute = ({ children }: { children: JSX.Element }) => {
-  const { id } = useAuth();
-  if (id) {
+  if (token) {
     return <Navigate to="/" replace />;
   }
   return children;
 };
 
 export default function App() {
+  const { setCurrentUser } = useCurrentUserStore();
+  const { setProjects } = useProjectStore();
+  const { setUsers } = useUserStore();
+  const { setIssues } = useIssueStore();
+
   useEffect(() => {
-    //fetch users,projects,issues
-    //store in zustand
+    //autologin
+    const autoLogin = async () => {
+      if (token) {
+        try {
+          // Fetch user details using the new "current" endpoint
+          const userResponse = await axios.get<User>(
+            `${baseURL}/api/User/current`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          // Set the current user and fetch tweets
+          setCurrentUser(userResponse.data);
+        } catch (error) {
+          console.error("Auto-login error:", error);
+          localStorage.removeItem("token"); // Remove invalid token if auto-login fails
+        }
+      }
+    };
+    autoLogin();
+
+    //fetch users,projects,issues and store in zustand
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get<Project[]>(`${baseURL}/api/Project`);
+        setProjects(response.data);
+      } catch (error) {
+        console.error("Error fetching Projects:", error);
+      }
+    };
+
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get<User[]>(`${baseURL}/api/User`);
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching Users:", error);
+      }
+    };
+
+    const fetchIssues = async () => {
+      try {
+        const response = await axios.get<Issue[]>(`${baseURL}/api/Issue`);
+
+        // Map the response to adjust the status field
+        const adjustedIssues = response.data.map((issue) => ({
+          ...issue,
+          status: mapIssueStatus(issue.status as unknown as number), // Convert status from number to enum
+        }));
+
+        setIssues(adjustedIssues);
+      } catch (error) {
+        console.error("Error fetching Issues:", error);
+      }
+    };
+
+    if (token) {
+      fetchIssues();
+      fetchProjects();
+      fetchUsers();
+    }
   }, []);
 
   return (

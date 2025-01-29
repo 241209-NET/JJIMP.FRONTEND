@@ -2,14 +2,17 @@ import { useIssueStore } from "../util/store/issueStore";
 import { useEffect, useState } from "react";
 import { Drawer, Box, Typography, TextField, Button } from "@mui/material";
 import CommentList from "./CommentList";
+import axios from "axios";
 
 interface IssueDrawerProps {
   issueId: number | null;
   onClose: () => void;
 }
 
+const baseURL = import.meta.env.VITE_BASE_URL;
+
 const IssueDrawer: React.FC<IssueDrawerProps> = ({ issueId, onClose }) => {
-  const { issues, updateIssue } = useIssueStore();
+  const { issues, updateIssue, deleteIssue } = useIssueStore();
   const issue = issues.find((issue) => issue.id === issueId);
   const [description, setDescription] = useState(issue?.description || "");
   const [updating, setUpdating] = useState(false);
@@ -31,8 +34,36 @@ const IssueDrawer: React.FC<IssueDrawerProps> = ({ issueId, onClose }) => {
 
   if (!issue) return null;
 
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`${baseURL}/api/Issue/${issueId}`);
+
+      deleteIssue(response.data.id);
+
+      alert("Issue deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting issue:", error);
+      alert("Failed to delete issue.");
+    }
+  };
+
   //PUT request goes here
-  const handleUpdateDescription = () => {
+  const handleUpdateDescription = async () => {
+    const updatedIssue = issue;
+
+    const payload = updatedIssue && {
+      id: issueId,
+      description: description,
+    };
+
+    try {
+      await axios.put(`${baseURL}/api/Issue`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error) {
+      console.error("PUT request failed:", error);
+    }
+
     updateIssue(issue.id, { description });
     setUpdating(false);
   };
@@ -40,9 +71,14 @@ const IssueDrawer: React.FC<IssueDrawerProps> = ({ issueId, onClose }) => {
   return (
     <Drawer anchor="right" open={openDrawer} onClose={handleClose}>
       <Box sx={{ width: 350, p: 2, display: "flex", flexDirection: "column" }}>
-        <Typography variant="h5" className="mb-2">
-          {issue.title}
-        </Typography>
+        <div className="flex justify-between">
+          <Typography variant="h5" className="mb-2">
+            {issue.title}
+          </Typography>
+          <Button variant="outlined" color="secondary" onClick={handleDelete}>
+            Delete
+          </Button>
+        </div>
         <Typography variant="body2" className="text-gray-400" sx={{ mt: 1 }}>
           Status: {issue.status}
         </Typography>
