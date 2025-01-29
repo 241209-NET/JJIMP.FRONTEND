@@ -46,10 +46,10 @@ const UsersIssues: React.FC<UsersIssuesProp> = ({ issues }) => {
             >
               <Box>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Issue ID: {issue.id}
+                  Project ID: {issue.projectId}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  {issue.description}
+                  {issue.title}
                 </Typography>
               </Box>
             </ListItemButton>
