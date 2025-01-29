@@ -17,7 +17,7 @@ import { useCurrentUserStore } from "./util/store/currentUserStore";
 import { useProjectStore } from "./util/store/projectStore";
 import { useUserStore } from "./util/store/userStore";
 import { useIssueStore } from "./util/store/issueStore";
-import { IssueStatus } from "./util/mockdata/mockData";
+import { IssueStatus, mapIssueStatus } from "./util/mockdata/mockData";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -43,16 +43,6 @@ export default function App() {
   const { setProjects } = useProjectStore();
   const { setUsers } = useUserStore();
   const { setIssues } = useIssueStore();
-
-  const mapIssueStatus = (status: number): IssueStatus => {
-    const statusMap: { [key: number]: IssueStatus } = {
-      0: IssueStatus.Inactive,
-      1: IssueStatus.Active,
-      2: IssueStatus.Review,
-      3: IssueStatus.Complete,
-    };
-    return statusMap[status] || IssueStatus.Inactive; // Default to Inactive if undefined
-  };
 
   useEffect(() => {
     //autologin

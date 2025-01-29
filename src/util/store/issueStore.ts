@@ -11,7 +11,11 @@ type issueStoreState = {
 export const useIssueStore = create<issueStoreState>((set) => ({
   issues: [],
   setIssues: (issues) => set({ issues }),
-  addIssue: (issue) => set((state) => ({ issues: [...state.issues, issue] })),
+  addIssue: (issue) => {
+    set((state) => ({
+      issues: [...state.issues, { ...issue }],
+    }));
+  },
   updateIssue: (id, updatedFields) =>
     set((state) => ({
       issues: state.issues.map((issue) =>
