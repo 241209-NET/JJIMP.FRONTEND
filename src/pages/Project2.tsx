@@ -56,7 +56,7 @@ export default function ProjectTable() {
     projectManagerId: currentUser?.id,
   });
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
-  const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     // handle fetching data here on mount
@@ -65,10 +65,10 @@ export default function ProjectTable() {
   //these are the menu open and close functions
   const handleOpenMenu = (
     event: React.MouseEvent<HTMLButtonElement>,
-    projectId: number
+    project: Project
   ) => {
     setMenuAnchor(event.currentTarget);
-    setSelectedProject(projectId);
+    setSelectedProject(project);
   };
 
   const handleCloseMenu = () => {
@@ -77,15 +77,45 @@ export default function ProjectTable() {
   };
 
   // Put action for project
-  const handleAssignUser = (userId: number) => {
-    console.log(userId);
+  const handleAssignUser = async (userId: number, project: Project) => {
+    try {
+      // Extract only user IDs from the project
+      const assignedUserIds = project?.users?.map((user) => user.id);
+
+      // Check if user is already assigned
+      const isAssigned = assignedUserIds?.includes(userId);
+
+      // If assigned, remove them; otherwise, add them
+      const updatedUserIds = isAssigned
+        ? assignedUserIds?.filter((id) => id !== userId) // Remove user
+        : [...(assignedUserIds ?? []), userId]; // Add user
+
+      const payload = {
+        id: project.id,
+        userIds: updatedUserIds, // Send only IDs cause of the DTO
+      };
+
+      console.log("Sending update:", payload);
+
+      const response = await axios.put(`${baseURL}/api/Project`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      updateProject(project.id, response.data);
+
+      console.log("Project updated:", response.data);
+      alert("Users assigned successfully!");
+    } catch (error) {
+      console.error("Error updating project:", error);
+      alert("Failed to assign users.");
+    }
     handleCloseMenu();
   };
 
   //delete action
   const handleDeleteProject = () => {
     if (selectedProject !== null) {
-      deleteProject(selectedProject);
+      deleteProject(selectedProject.id);
     }
     handleCloseMenu();
   };
@@ -201,7 +231,7 @@ export default function ProjectTable() {
                     </TableCell>
                     <TableCell>
                       <IconButton
-                        onClick={(event) => handleOpenMenu(event, project.id)}
+                        onClick={(event) => handleOpenMenu(event, project)}
                       >
                         <MoreVertIcon />
                       </IconButton>
@@ -210,15 +240,25 @@ export default function ProjectTable() {
                         open={Boolean(menuAnchor)}
                         onClose={handleCloseMenu}
                       >
-                        {users.length > 0 ? (
-                          users.map((user) => (
-                            <MenuItem
-                              key={user.id}
-                              onClick={() => handleAssignUser(user.id)}
-                            >
-                              Assign {user.name}
-                            </MenuItem>
-                          ))
+                        {users.length > 0 && selectedProject ? (
+                          users.map((user) => {
+                            const isAssigned = selectedProject.users?.some(
+                              (u) => u.id === user.id
+                            );
+
+                            return (
+                              <MenuItem
+                                key={user.id}
+                                onClick={() =>
+                                  handleAssignUser(user.id, selectedProject)
+                                }
+                              >
+                                {isAssigned
+                                  ? `Unassign ${user.name}`
+                                  : `Assign ${user.name}`}
+                              </MenuItem>
+                            );
+                          })
                         ) : (
                           <MenuItem disabled>No Users Available</MenuItem>
                         )}
