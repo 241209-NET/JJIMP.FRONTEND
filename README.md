@@ -9,9 +9,15 @@ This project is a simple project management ticketing system designed to help us
 
 **Project Management Ticketing System**
 
-## USAGE
+## DEMO
 
-This is an team project to present to colleagues in training.
+https://delightful-beach-074599d0f.4.azurestaticapps.net/
+
+## API Repository
+
+https://github.com/241209-NET/JJIMP.BACKEND
+
+## Goals
 
 MVP Goals
 
