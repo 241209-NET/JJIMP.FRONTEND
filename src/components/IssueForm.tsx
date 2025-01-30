@@ -65,7 +65,6 @@ const IssueForm: React.FC<IssueFormProps> = ({
       });
 
       console.log("Issue created:", response.data);
-      alert("Issue created successfully!");
 
       //decoding status again
       const createdIssue = {

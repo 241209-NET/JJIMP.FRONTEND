@@ -104,7 +104,6 @@ export default function ProjectTable() {
       updateProject(project.id, response.data);
 
       console.log("Project updated:", response.data);
-      alert("Users assigned successfully!");
     } catch (error) {
       console.error("Error updating project:", error);
       alert("Failed to assign users.");
