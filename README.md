@@ -2,7 +2,7 @@
 
 ## ABOUT
 
-Project Management Ticketing System:  
+JJIMP Project Management Ticketing System:  
 This project is a simple project management ticketing system designed to help users track tasks efficiently. Users can create projects, add issues, assign tasks, and leave comments to facilitate collaboration. The system provides basic status tracking and metadata for better organization. It's ideal for small teams or individuals looking for a streamlined task management solution.
 
 ## PROJECT NAME
